@@ -35,4 +35,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="BigText Notification" />
+        <Button
+        android:id="@+id/voicereplyButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Vioce Reply Notification" />
 </LinearLayout>

@@ -26,6 +26,10 @@
             android:name=".NotiActivity"
             android:label="@string/title_activity_noti" >
         </activity>
+        <activity
+            android:name=".VoiceNotiActivity"
+            android:label="@string/title_activity_voice_noti" >
+        </activity>
     </application>
 
 </manifest>

@@ -10,13 +10,16 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.BigTextStyle;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.NotificationCompat.WearableExtender;
+import android.support.v4.app.RemoteInput;
 import android.util.Log;
 import android.view.View;
 
 public class MainActivity extends Activity {
 
 	int notificationID = 1;
-	
+	// Key for the string that's delivered in the action's intent
+	private static final String EXTRA_VOICE_REPLY = "extra_voice_reply";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,6 +47,12 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				bigTextNoti();
+			}
+		});
+		this.findViewById(R.id.voicereplyButton).setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				voiceReplytNoti();
 			}
 		});
 	}
@@ -178,5 +187,47 @@ public class MainActivity extends Activity {
 		// Build the notification and issues it with notification manager.
 		notificationManager.notify(notificationID, notificationBuilder.build());
 		notificationID++;
+	}
+	void voiceReplytNoti() {
+		
+
+		//create the intent to launch the notiactivity, then the pentingintent.
+		Intent replyIntent = new Intent(this, VoiceNotiActivity.class);
+		replyIntent.putExtra("NotiID", "Notification ID is " + notificationID);
+		
+		PendingIntent replyPendingIntent =
+		        PendingIntent.getActivity(this, 0, replyIntent, 0);
+		
+		// create the remote input part for the notification.
+		RemoteInput remoteInput = new RemoteInput.Builder(EXTRA_VOICE_REPLY)
+        .setLabel("Reply")
+        .build();
+		
+		
+		// Create the reply action and add the remote input
+		NotificationCompat.Action action =
+		        new NotificationCompat.Action.Builder(R.drawable.ic_action_map,
+		                "Reply", replyPendingIntent)
+		                .addRemoteInput(remoteInput)
+		                .build();
+
+
+
+		//Now create the notification.  We must use the NotificationCompat or it will not work on the wearable.
+		NotificationCompat.Builder notificationBuilder =
+		        new NotificationCompat.Builder(this)
+		        .setSmallIcon(R.drawable.ic_launcher)
+		        .setContentTitle("reply Noti")
+		        .setContentText("voice reply example.")
+		        .extend(new WearableExtender().addAction(action));
+
+		// Get an instance of the NotificationManager service
+		NotificationManagerCompat notificationManager =
+		        NotificationManagerCompat.from(this);
+
+		// Build the notification and issues it with notification manager.
+		notificationManager.notify(notificationID, notificationBuilder.build());
+		notificationID++;
+		
 	}
 }
