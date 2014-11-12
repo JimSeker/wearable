@@ -3,7 +3,6 @@ package edu.cs4730.wearnotidemo;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
@@ -13,6 +12,16 @@ import android.support.v4.app.NotificationCompat.WearableExtender;
 import android.support.v4.app.RemoteInput;
 import android.util.Log;
 import android.view.View;
+
+/*
+ * This example shows varying notifications that work on the wearable device as well as on the 
+ * the phone.  
+ * 
+ * 
+ * Don't forget to use this command if running an emulator for wear.  Run everytime you connect the phone.
+ * adb -d forward tcp:5601 tcp:5601
+ */
+
 
 public class MainActivity extends Activity {
 
@@ -87,6 +96,9 @@ public class MainActivity extends Activity {
 		notificationID++;
 	}
 
+	/*
+	 * This one adds a button to the notification.  lauches the camera for this example.
+	 */
 	void addbuttonNoti() {
 		Log.i("main", "addbutton noti");
 		//create the intent to launch the notiactivity, then the pentingintent.
@@ -121,6 +133,11 @@ public class MainActivity extends Activity {
 		notificationID++;
 		
 	}
+	
+	/*
+	 * This adds the button so it only shows on the wearable device and not
+	 * the phone notification.
+	 */
 	void onlywearableNoti() {
 		//create the intent to launch the notiactivity, then the pentingintent.
 		Intent viewIntent = new Intent(this, NotiActivity.class);
@@ -158,6 +175,10 @@ public class MainActivity extends Activity {
 		notificationManager.notify(notificationID, notificationBuilder.build());
 		notificationID++;
 	}
+	
+	/*
+	 * using the bigtext notificiation.
+	 */
 	void bigTextNoti() {
 		//create the intent to launch the notiactivity, then the pentingintent.
 		Intent viewIntent = new Intent(this, NotiActivity.class);
@@ -188,6 +209,12 @@ public class MainActivity extends Activity {
 		notificationManager.notify(notificationID, notificationBuilder.build());
 		notificationID++;
 	}
+	
+	
+	/*
+	 * This adds the voice response for the wearable device.
+	 * It comes back via an intent, which is shown in voiceNotiActivity.
+	 */
 	void voiceReplytNoti() {
 		
 
