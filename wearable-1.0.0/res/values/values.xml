@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="black">#000</color>
+    <color name="blue">#2878ff</color>
+    <color name="dark_blue">#2955C5</color>
+    <color name="disabled_text_light">#E0E0E0</color>
+    <color name="dismiss_close">#FF5151</color>
+    <color name="dismiss_close_pressed">#B83120</color>
+    <color name="dismiss_overlay_bg">#80000000</color>
+    <color name="green">#32CD32</color>
+    <color name="grey">#777777</color>
+    <color name="light_grey">#cccccc</color>
+    <color name="orange">#FF6D3F</color>
+    <color name="primary_text_dark">#FFFFFF</color>
+    <color name="primary_text_light">#434343</color>
+    <color name="red">#FF5252</color>
+    <color name="secondary_text_light">#A2A2A2</color>
+    <color name="semitransparent_grey">#66777777</color>
+    <color name="white">#FFFFFF</color>
+
+    <declare-styleable name="BoxInsetLayout">
+        <attr name="layout_box">
+            <flag name="left" value="0x01" />
+            <flag name="top" value="0x02" />
+            <flag name="right" value="0x04" />
+            <flag name="bottom" value="0x08" />
+            <flag name="all" value="0x0F" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="CircledImageView">
+        <attr name="android:src" />
+        <attr name="circle_color" format="color" />
+        <attr name="circle_radius" format="dimension" />
+        <attr name="circle_radius_pressed" format="dimension" />
+        <attr name="circle_border_width" format="dimension" />
+        <attr name="circle_border_color" format="color" />
+        <attr name="circle_padding" format="dimension" />
+        <attr name="shadow_width" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="DelayedConfirmationView">
+        <attr name="update_interval" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="WatchViewStub">
+
+        <!-- Resource id of a layout to use in rectangular containers -->
+        <attr name="rectLayout" format="reference" />
+        <!-- Resource id of a layout to use in round containers -->
+        <attr name="roundLayout" format="reference" />
+    </declare-styleable>
+
+    <dimen name="card_content_padding_rect_left">4dp</dimen>
+    <dimen name="card_content_padding_rect_right">4dp</dimen>
+    <dimen name="card_content_padding_rect_top">16dp</dimen>
+    <dimen name="close_button_diameter">104dp</dimen>
+    <dimen name="dismiss_padding">16dp</dimen>
+
+    <style name="CardContent">
+        <item name="android:paddingLeft">@dimen/card_content_padding_rect_left</item>
+        <item name="android:paddingRight">@dimen/card_content_padding_rect_right</item>
+        <item name="android:paddingTop">@dimen/card_content_padding_rect_top</item>
+    </style>
+
+    <style name="CardText" parent="TextView.Medium.Light">
+        <item name="android:lineSpacingMultiplier">0.92</item>
+    </style>
+
+    <style name="CardTitle" parent="TextView.Medium.Light">
+        <item name="android:textColor">@color/secondary_text_light</item>
+    </style>
+
+    <style name="DismissOverlayText" parent="TextView.Large.Light">
+        <item name="android:background">@color/dismiss_close</item>
+        <item name="android:gravity">center</item>
+        <item name="android:lineSpacingExtra">-2sp</item>
+        <item name="android:textColor">@color/primary_text_dark</item>
+    </style>
+
+    <style name="TextAppearance.Wearable.Large" parent="android:TextAppearance.Medium">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/primary_text_light</item>
+    </style>
+
+    <style name="TextAppearance.Wearable.Medium" parent="android:TextAppearance.Medium">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/primary_text_light</item>
+    </style>
+
+    <style name="TextAppearance.Wearable.Small" parent="android:TextAppearance.Medium">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/primary_text_light</item>
+    </style>
+
+    <style name="TextView.Large" parent="@android:style/Widget.Holo.Light">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textAppearance">@style/TextAppearance.Wearable.Large</item>
+    </style>
+
+    <style name="TextView.Large.Light">
+        <item name="android:fontFamily">sans-serif-condensed-light</item>
+        <item name="android:textAppearance">@style/TextAppearance.Wearable.Large</item>
+    </style>
+
+    <style name="TextView.Medium" parent="@android:style/Widget.Holo.Light">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textAppearance">@style/TextAppearance.Wearable.Medium</item>
+    </style>
+
+    <style name="TextView.Medium.Light">
+        <item name="android:fontFamily">sans-serif-condensed-light</item>
+        <item name="android:textAppearance">@style/TextAppearance.Wearable.Medium</item>
+    </style>
+
+    <style name="TextView.Small" parent="@android:style/Widget.Holo.Light">
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:textAppearance">@style/TextAppearance.Wearable.Small</item>
+    </style>
+
+    <style name="TextView.Small.Light">
+        <item name="android:fontFamily">sans-serif-condensed-light</item>
+        <item name="android:textAppearance">@style/TextAppearance.Wearable.Small</item>
+    </style>
+
+    <style name="Theme.Wearable" parent="@android:Theme.DeviceDefault.Light.NoActionBar" />
+
+    <style name="Theme.Wearable.Modal">
+        <item name="android:windowSwipeToDismiss">false</item>
+    </style>
+
+</resources>
