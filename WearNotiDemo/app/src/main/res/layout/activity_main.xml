@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="edu.cs4730.wearnotidemo.MainActivity" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world" />
+
+    <Button
+        android:id="@+id/simpleButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Simple Wearable Notification" />
+    <Button
+        android:id="@+id/addactionButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="addAction Notification" />
+    <Button
+        android:id="@+id/onlywearableButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="only on wearable Notification" />
+    <Button
+        android:id="@+id/bigtextButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="BigText Notification" />
+        <Button
+        android:id="@+id/voicereplyButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Vioce Reply Notification" />
+</LinearLayout>

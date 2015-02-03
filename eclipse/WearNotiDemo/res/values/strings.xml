@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">WearNotiDemo</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_noti">NotiActivity</string>
+    <string name="title_activity_voice_noti">VoiceNotiActivity</string>
+
+</resources>

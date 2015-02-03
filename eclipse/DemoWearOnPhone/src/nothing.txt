@@ -1,0 +1,3 @@
+nothing!  so githut will kept/create the src direction and this will "compile"
+
+This is a shell app, whose purpose to copy the apk onto the wearable device.
