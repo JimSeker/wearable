@@ -16,9 +16,11 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.SurfaceHolder;
 
-import java.util.TimeZone;
-
-import static android.graphics.Color.parseColor;
+/*
+ *  this is the most striped down version of the watchfaceservice.
+ *  since it doesn't even show the time, it only updates on the default.
+ *  it deals with everything necessary, such as ambient and timezone changes.
+ */
 
 public class beerWatchFaceService extends CanvasWatchFaceService {
     private static final String TAG = "BeerFaceService";
@@ -74,7 +76,7 @@ public class beerWatchFaceService extends CanvasWatchFaceService {
             mtextPaint.setColor(Color.YELLOW);
             mtextPaint.setAntiAlias(true);
             mtextPaint.setTypeface(BOLD_TYPEFACE);  //which font.
-            //mtextPaint.setTextSize(R.dimen.digital_text_size);
+            //mtextPaint.setTextSize(resources.getDimension(R.dimen.digital_text_size));
             mtextPaint.setTextSize(45);
 
         }
@@ -94,7 +96,7 @@ public class beerWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onTimeTick() {
             super.onTimeTick();
-            /* the time changed by 1 minute is the default*/
+            /* the time changed by 1 minute which is the default*/
             if (Log.isLoggable(TAG, Log.DEBUG)) {
                 Log.d(TAG, "onTimeTick: ambient = " + isInAmbientMode());
             }

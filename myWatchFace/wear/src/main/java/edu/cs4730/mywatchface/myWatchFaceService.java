@@ -28,6 +28,10 @@ import java.util.TimeZone;
 
 import static android.graphics.Color.*;
 
+/*
+ * this code is based off google's example.
+ */
+
 public class myWatchFaceService extends CanvasWatchFaceService {
 
     private static final String TAG = "myWatchFaceService";
