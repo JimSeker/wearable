@@ -113,13 +113,18 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
-
+                //see https://developer.android.com/reference/android/support/wearable/watchface/WatchFaceStyle.Builder.html for more info on the methods use
+                //in the next command
             setWatchFaceStyle(new WatchFaceStyle.Builder(BatmanWatchFaceService.this)
-                    .setCardPeekMode(WatchFaceStyle.PEEK_MODE_VARIABLE)
-                    .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
-                    .setShowSystemUiTime(false)  //we are NOT showing the actual time
+                    //.setCardPeekMode(WatchFaceStyle.PEEK_MODE_VARIABLE)  //allow multi line cards to show.
+                    .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)  //allow only one line of a card to show.
+                    .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)  //show card background for a short time
+                    //.setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_PERSISTENT)  //allows show background for card. except seem to doesn't work.
+                    //.setAmbientPeekMode( WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)  //no cards in ambient mode
+                    .setAmbientPeekMode( WatchFaceStyle.AMBIENT_PEEK_MODE_VISIBLE)  //allow cards in ambient mode, default is yes
+                    .setHotwordIndicatorGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL)  //where 'OK google' shows
+                    .setShowSystemUiTime(false)  //we are are showing the actual time, so the system doesn't need too.
                     .setStatusBarGravity(Gravity.TOP | Gravity.RIGHT) //where the battery and connect icons shows.
-                    .setShowSystemUiTime(false)
                     .build());
             Resources resources = BatmanWatchFaceService.this.getResources();
             mYOffset = resources.getDimension(R.dimen.digital_y_offset);
@@ -196,8 +201,11 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
             boolean isRound = insets.isRound();
             mXOffset = resources.getDimension(isRound
                     ? R.dimen.digital_x_offset_round : R.dimen.digital_x_offset);
+            //time size
             float textSize = resources.getDimension(isRound
-                    ? R.dimen.digital_text_size_round : R.dimen.digital_text_size);
+            //        ? R.dimen.digital_text_size_round : R.dimen.digital_text_size);
+                    ? R.dimen.date_text_size_round : R.dimen.date_text_size);
+            //date size.
             float datetextSize = resources.getDimension(isRound
                     ? R.dimen.date_text_size_round : R.dimen.date_text_size);
 
@@ -218,7 +226,7 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
             time_width_amb = bounds.width();
             time_height_amb = bounds.height();
 
-            text = "02/27 Fri";  //sample date
+            text = "02/27 Mon";  //sample date
             mTextPaint_date.getTextBounds(text, 0, text.length(), bounds );
             date_height = bounds.height();
             date_width = bounds.width();
@@ -264,6 +272,9 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
             center_x = bounds.width() /2;
             center_y = bounds.height() /2;
 
+            //do we need to deal with a peek card showing?
+            Rect cardbounds = getPeekCardPosition();  //returns the bounds of the showing peek card.  if no peek card? returns what?
+
             // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
             mTime.setToNow();
             String text = mAmbient
@@ -276,8 +287,10 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
             time_width = mybounds.width();
 
             //canvas.drawText(text, mXOffset, mYOffset, mTextPaint);
+            //http://man7.org/linux/man-pages/man3/strftime.3.html for the format command info.
             String Date = mTime.format("%m/%d %a");
-            canvas.drawText(Date, center_x - (date_width/2), center_y - 55 , mTextPaint_date);
+            //canvas.drawText(Date, center_x - (date_width/2), center_y - 55 , mTextPaint_date);
+            canvas.drawText(text, center_x -(time_width/2), center_y -55, mTextPaint_time);
             //draw picture, change if ambient to black and white version.
             if (mAmbient) {
                 canvas.drawBitmap(bm_bw, center_x - 84, center_y - 50, mBackgroundPaint);
@@ -286,7 +299,11 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
                 canvas.drawBitmap(bm_c, center_x - 84, center_y - 50, mBackgroundPaint);
                 //canvas.drawText(text, center_x -(time_width/2), center_y + 55+ time_height, mTextPaint_time);
             }
-            canvas.drawText(text, center_x -(time_width/2), center_y + 55+ time_height, mTextPaint_time);
+            //canvas.drawText(text, center_x -(time_width/2), center_y + 55+ time_height, mTextPaint_time);
+            canvas.drawText(Date, center_x - (date_width/2), center_y + 55 + date_height, mTextPaint_date);
+            //Draw a black box below the card, so it is readable.  This will over write the date
+            //and more if it's WatchFaceStyle.PEEK_MODE_VARIABLE.  but the peek card is readable.
+            canvas.drawRect(cardbounds, mBackgroundPaint);
         }
 
         /**

@@ -1,0 +1,6 @@
+	
+<wearableApp package="edu.cs4730.wearappdemo">
+    <versionCode>2</versionCode>
+	<versionName>1.1</versionName>
+	<rawPathResId>wearappdemo</rawPathResId>
+</wearableApp>
