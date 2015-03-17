@@ -1,0 +1,19 @@
+There are a number of websites that were used to create this project
+
+These first two were very helpful and this project code is based on it.
+http://android-wear-docs.readthedocs.org/en/latest/sync.html
+https://github.com/LarkspurCA/WearableMessage
+
+This provided a lot of answers/help to my questions.  Some are better then others.  Not all of
+these are of these datalayer messaging.
+
+http://android-wear-docs.readthedocs.org/en/latest/data.html
+https://developer.android.com/training/wearables/data-layer/messages.html
+https://developer.android.com/training/wearables/apps/creating.html
+https://www.google.com/search?q=send+data+layer+messages+to+phone&ie=utf-8&oe=utf-8
+http://developer.android.com/training/wearables/data-layer/index.html
+http://www.binpress.com/tutorial/a-guide-to-the-android-wear-message-api/152
+http://stackoverflow.com/questions/24595170/sending-messages-from-android-wear-to-host-device
+https://github.com/kentarosu/AndroidWearAndLIFX/blob/master/mobile/src/main/java/com/gatling/wearlifx/LifxService.java
+https://github.com/petrnalevka/wear/tree/master/watch
+
