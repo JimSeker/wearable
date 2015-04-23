@@ -1,8 +1,8 @@
 package edu.cs4730.wearnotidemo;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.RemoteInput;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 /*
@@ -10,7 +10,7 @@ import android.widget.TextView;
  * otherwise, it doesn't do anything.
  */
 
-public class VoiceNotiActivity extends Activity {
+public class VoiceNotiActivity extends AppCompatActivity {
 	String info;
 	TextView logger;
 	// Key for the string that's delivered in the action's intent

@@ -1,7 +1,7 @@
 package edu.cs4730.wearnotidemo;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 /*
@@ -10,7 +10,7 @@ import android.widget.TextView;
  */
 
 
-public class NotiActivity extends Activity {
+public class NotiActivity extends AppCompatActivity {
 	String info;
 	TextView logger;
 	

@@ -1,6 +1,5 @@
 package edu.cs4730.wearnotidemo;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.support.v4.app.NotificationCompat.BigTextStyle;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.app.NotificationCompat.WearableExtender;
 import android.support.v4.app.RemoteInput;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
@@ -23,7 +23,7 @@ import android.view.View;
  */
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
 	int notificationID = 1;
 	// Key for the string that's delivered in the action's intent
@@ -97,7 +97,7 @@ public class MainActivity extends Activity {
 	}
 
 	/*
-	 * This one adds a button to the notification.  lauches the camera for this example.
+	 * This one adds a button to the notification.  launches the camera for this example.
 	 */
 	void addbuttonNoti() {
 		Log.i("main", "addbutton noti");
