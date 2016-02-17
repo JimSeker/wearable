@@ -3,7 +3,7 @@ Android wearable Examples
 
 eclipse/ is old examples in the eclipse format for wear v1.0.0 
 
-All examples are for wear v5+
+All examples are for wear v5+ (which is wear v1.1.0+) since google can't keep the versioning straight.
 
 <b>WearNotiDemo</b> example of how to send notifications to the wearable device
 
