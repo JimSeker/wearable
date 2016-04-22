@@ -33,13 +33,13 @@ import com.google.android.gms.wearable.Wearable;
  */
 
 
-public class MainActivity extends Activity        implements
-                    GoogleApiClient.ConnectionCallbacks,
-                    GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends Activity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
     GoogleApiClient googleClient;
     private final static String TAG = "Wear MainActivity";
     private TextView mTextView;
-    Button myButton ;
+    Button myButton;
     int num = 1;
     boolean connected = false;
     String datapath = "/message_path";
@@ -48,22 +48,16 @@ public class MainActivity extends Activity        implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
-        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
+        mTextView = (TextView) findViewById(R.id.text);
+        //send a message from the wear.  This one will not have response.
+        myButton = (Button) findViewById(R.id.wrbutton);
+        myButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onLayoutInflated(WatchViewStub stub) {
-                mTextView = (TextView) stub.findViewById(R.id.text);
-                //send a message from the wear.  This one will not have response.
-                myButton = (Button) stub.findViewById(R.id.wrbutton);
-                myButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String message = "click Hello device " + num;
-                        //Requires a new thread to avoid blocking the UI
-                        new SendThread(datapath, message).start();
-                        num++;
-                    }
-                });
+            public void onClick(View v) {
+                String message = "click Hello device " + num;
+                //Requires a new thread to avoid blocking the UI
+                new SendThread(datapath, message).start();
+                num++;
             }
         });
         // Register the local broadcast receiver to receive messages from the listener.
@@ -110,12 +104,12 @@ public class MainActivity extends Activity        implements
 
     @Override
     public void onConnectionSuspended(int i) {
-        connected =false;
+        connected = false;
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        connected =false;
+        connected = false;
     }
 
     //This actually sends the message to the wearable device.
@@ -136,7 +130,7 @@ public class MainActivity extends Activity        implements
             for (Node node : nodes.getNodes()) {
                 MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(googleClient, node.getId(), path, message.getBytes()).await();
                 if (result.getStatus().isSuccess()) {
-                    Log.v(TAG, "SendThread: message send to "+ node.getDisplayName());
+                    Log.v(TAG, "SendThread: message send to " + node.getDisplayName());
 
                 } else {
                     // Log an error
