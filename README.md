@@ -15,6 +15,7 @@ All examples are for wear v5+ (which is wear v1.1.0+) since google can't keep th
 
 <b>WearAppv23</b> is an app to run the watch, that has a button to show a random number.  Uses a layout-round layout-notround (for v23+) to display round/square.
 
+<b>WearSensorsDemo</b> is an example of using the sensor (Game Rotation vector).
 
 <b>WearableDataLayer</b> is an example of how send messages back and forth between the wear app and a phone app using the data layer in google-playservices.  You will need to install the wear app on to the wear device.  Install the mobile app on the phone/tablet device that is connected to the wear device. This works best using Studio 1.1.0+.  This was tested on a 5.1 wear device and android 5.1 device.
 
