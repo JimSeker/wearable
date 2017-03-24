@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<wearableApp package="edu.cs4730.wearapp">
-    <versionCode>1</versionCode>
-    <versionName>1.0</versionName>
-    <rawPathResId>wearapp</rawPathResId>
-</wearableApp>
