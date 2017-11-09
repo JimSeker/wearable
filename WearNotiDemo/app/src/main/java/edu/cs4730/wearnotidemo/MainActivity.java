@@ -1,7 +1,11 @@
 package edu.cs4730.wearnotidemo;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
@@ -24,237 +28,267 @@ import android.view.View;
 
 
 public class MainActivity extends AppCompatActivity {
+    public static String id = "test_channel_01";
+    int notificationID = 1;
+    // Key for the string that's delivered in the action's intent
+    private static final String EXTRA_VOICE_REPLY = "extra_voice_reply";
 
-	int notificationID = 1;
-	// Key for the string that's delivered in the action's intent
-	private static final String EXTRA_VOICE_REPLY = "extra_voice_reply";
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
-		this.findViewById(R.id.simpleButton).setOnClickListener(new View.OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				simpleNoti();
-			}
-		});
-		this.findViewById(R.id.addactionButton).setOnClickListener(new View.OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				addbuttonNoti();
-			}
-		});
-		this.findViewById(R.id.onlywearableButton).setOnClickListener(new View.OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				onlywearableNoti();
-			}
-		});
-		this.findViewById(R.id.bigtextButton).setOnClickListener(new View.OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				bigTextNoti();
-			}
-		});
-		this.findViewById(R.id.voicereplyButton).setOnClickListener(new View.OnClickListener(){
-			@Override
-			public void onClick(View v) {
-				voiceReplytNoti();
-			}
-		});
-	}
-	
-	/*
-	 * Just a simple notification that will show up on the wearable.
-	 * the user can swipe the notification to the left to reveal the Open action, which invokes the intent on the handheld device.
-	 */
-	void simpleNoti() {
-		
-		//create the intent to launch the notiactivity, then the pentingintent.
-		Intent viewIntent = new Intent(this, NotiActivity.class);
-		viewIntent.putExtra("NotiID", "Notification ID is " + notificationID);
-		
-		PendingIntent viewPendingIntent =
-		        PendingIntent.getActivity(this, 0, viewIntent, 0);
+        this.findViewById(R.id.simpleButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                simpleNoti();
+            }
+        });
+        this.findViewById(R.id.addactionButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addbuttonNoti();
+            }
+        });
+        this.findViewById(R.id.onlywearableButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onlywearableNoti();
+            }
+        });
+        this.findViewById(R.id.bigtextButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bigTextNoti();
+            }
+        });
+        this.findViewById(R.id.voicereplyButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                voiceReplytNoti();
+            }
+        });
+        createchannel();
+    }
 
-		//Now create the notification.  We must use the NotificationCompat or it will not work on the wearable.
-		NotificationCompat.Builder notificationBuilder =
-		        new NotificationCompat.Builder(this)
-		        .setSmallIcon(R.drawable.ic_launcher)
-		        .setContentTitle("Simple Noti")
-		        .setContentText("This is a simple notification")
-		        .setContentIntent(viewPendingIntent);
+    /*
+     * Just a simple notification that will show up on the wearable.
+     * the user can swipe the notification to the left to reveal the Open action, which invokes the intent on the handheld device.
+     */
+    void simpleNoti() {
 
-		// Get an instance of the NotificationManager service
-		NotificationManagerCompat notificationManager =
-		        NotificationManagerCompat.from(this);
+        //create the intent to launch the notiactivity, then the pentingintent.
+        Intent viewIntent = new Intent(this, NotiActivity.class);
+        viewIntent.putExtra("NotiID", "Notification ID is " + notificationID);
 
-		// Build the notification and issues it with notification manager.
-		notificationManager.notify(notificationID, notificationBuilder.build());
-		notificationID++;
-	}
+        PendingIntent viewPendingIntent =
+            PendingIntent.getActivity(this, 0, viewIntent, 0);
 
-	/*
-	 * This one adds a button to the notification.  launches the camera for this example.
-	 */
-	void addbuttonNoti() {
-		Log.i("main", "addbutton noti");
-		//create the intent to launch the notiactivity, then the pentingintent.
-		Intent viewIntent = new Intent(this, NotiActivity.class);
-		viewIntent.putExtra("NotiID", "Notification ID is " + notificationID);
-		
-		PendingIntent viewPendingIntent =
-		        PendingIntent.getActivity(this, 0, viewIntent, 0);
-		
-		// we are going to add an intent to open the camera here.
-		Intent cameraIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
-		PendingIntent cameraPendingIntent =
-		        PendingIntent.getActivity(this, 0, cameraIntent, 0);
-		
+        //Now create the notification.  We must use the NotificationCompat or it will not work on the wearable.
+        NotificationCompat.Builder notificationBuilder =
+            new NotificationCompat.Builder(this, id)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle("Simple Noti")
+                .setContentText("This is a simple notification")
+                .setChannelId(id)
+                .setContentIntent(viewPendingIntent);
 
-		//Now create the notification.  We must use the NotificationCompat or it will not work on the wearable.
-		NotificationCompat.Builder notificationBuilder =
-		        new NotificationCompat.Builder(this)
-		        .setSmallIcon(R.drawable.ic_launcher)
-		        .setContentTitle("add button Noti")
-		        .setContentText("swipe left to open camera.")
-		        .setContentIntent(viewPendingIntent)
-		        .addAction(R.drawable.ic_action_time,
-                "take Picutre", cameraPendingIntent);
+        // Get an instance of the NotificationManager service
+        NotificationManagerCompat notificationManager =
+            NotificationManagerCompat.from(this);
 
-		// Get an instance of the NotificationManager service
-		NotificationManagerCompat notificationManager =
-		        NotificationManagerCompat.from(this);
+        // Build the notification and issues it with notification manager.
+        notificationManager.notify(notificationID, notificationBuilder.build());
+        notificationID++;
+    }
 
-		// Build the notification and issues it with notification manager.
-		notificationManager.notify(notificationID, notificationBuilder.build());
-		notificationID++;
-		
-	}
-	
-	/*
-	 * This adds the button so it only shows on the wearable device and not
-	 * the phone notification.
-	 */
-	void onlywearableNoti() {
-		//create the intent to launch the notiactivity, then the pentingintent.
-		Intent viewIntent = new Intent(this, NotiActivity.class);
-		viewIntent.putExtra("NotiID", "Notification ID is " + notificationID);
-		
-		PendingIntent viewPendingIntent =
-		        PendingIntent.getActivity(this, 0, viewIntent, 0);
-		
-		// we are going to add an intent to open the camera here.
-		Intent cameraIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
-		PendingIntent cameraPendingIntent =
-		        PendingIntent.getActivity(this, 0, cameraIntent, 0);
-		
-		// Create the action
-		NotificationCompat.Action action =
-		        new NotificationCompat.Action.Builder(R.drawable.ic_action_time,
-		                "take a Picutre", cameraPendingIntent)
-		                .build();
+    /*
+     * This one adds a button to the notification.  launches the camera for this example.
+     */
+    void addbuttonNoti() {
+        Log.i("main", "addbutton noti");
+        //create the intent to launch the notiactivity, then the pentingintent.
+        Intent viewIntent = new Intent(this, NotiActivity.class);
+        viewIntent.putExtra("NotiID", "Notification ID is " + notificationID);
+
+        PendingIntent viewPendingIntent =
+            PendingIntent.getActivity(this, 0, viewIntent, 0);
+
+        // we are going to add an intent to open the camera here.
+        Intent cameraIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+        PendingIntent cameraPendingIntent =
+            PendingIntent.getActivity(this, 0, cameraIntent, 0);
 
 
-		//Now create the notification.  We must use the NotificationCompat or it will not work on the wearable.
-		NotificationCompat.Builder notificationBuilder =
-		        new NotificationCompat.Builder(this)
-		        .setSmallIcon(R.drawable.ic_launcher)
-		        .setContentTitle("add button Noti")
-		        .setContentText("swipe left to open camera.")
-		        .setContentIntent(viewPendingIntent)
-		        .extend(new WearableExtender().addAction(action));
+        //Now create the notification.  We must use the NotificationCompat or it will not work on the wearable.
+        NotificationCompat.Builder notificationBuilder =
+            new NotificationCompat.Builder(this, id)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle("add button Noti")
+                .setContentText("swipe left to open camera.")
+                .setContentIntent(viewPendingIntent)
+                .setChannelId(id)
+                .addAction(R.drawable.ic_action_time,
+                    "take Picutre", cameraPendingIntent);
 
-		// Get an instance of the NotificationManager service
-		NotificationManagerCompat notificationManager =
-		        NotificationManagerCompat.from(this);
+        // Get an instance of the NotificationManager service
+        NotificationManagerCompat notificationManager =
+            NotificationManagerCompat.from(this);
 
-		// Build the notification and issues it with notification manager.
-		notificationManager.notify(notificationID, notificationBuilder.build());
-		notificationID++;
-	}
-	
-	/*
-	 * using the bigtext notificiation.
-	 */
-	void bigTextNoti() {
-		//create the intent to launch the notiactivity, then the pentingintent.
-		Intent viewIntent = new Intent(this, NotiActivity.class);
-		viewIntent.putExtra("NotiID", "Notification ID is " + notificationID);
-		
-		PendingIntent viewPendingIntent =
-		        PendingIntent.getActivity(this, 0, viewIntent, 0);
+        // Build the notification and issues it with notification manager.
+        notificationManager.notify(notificationID, notificationBuilder.build());
+        notificationID++;
 
-		BigTextStyle bigStyle = new NotificationCompat.BigTextStyle();
-		bigStyle.bigText("Big text style.\n"
-				+ "We should have more room to add text for the user to read, instead of a short message.");
+    }
 
-		
-		//Now create the notification.  We must use the NotificationCompat or it will not work on the wearable.
-		NotificationCompat.Builder notificationBuilder =
-		        new NotificationCompat.Builder(this)
-		        .setSmallIcon(R.drawable.ic_launcher)
-		        .setContentTitle("Simple Noti")
-		        .setContentText("This is a simple notification")
-		        .setContentIntent(viewPendingIntent)
-		        .setStyle(bigStyle);
+    /*
+     * This adds the button so it only shows on the wearable device and not
+     * the phone notification.
+     */
+    void onlywearableNoti() {
+        //create the intent to launch the notiactivity, then the pentingintent.
+        Intent viewIntent = new Intent(this, NotiActivity.class);
+        viewIntent.putExtra("NotiID", "Notification ID is " + notificationID);
 
-		// Get an instance of the NotificationManager service
-		NotificationManagerCompat notificationManager =
-		        NotificationManagerCompat.from(this);
+        PendingIntent viewPendingIntent =
+            PendingIntent.getActivity(this, 0, viewIntent, 0);
 
-		// Build the notification and issues it with notification manager.
-		notificationManager.notify(notificationID, notificationBuilder.build());
-		notificationID++;
-	}
-	
-	
-	/*
-	 * This adds the voice response for the wearable device.
-	 * It comes back via an intent, which is shown in voiceNotiActivity.
-	 */
-	void voiceReplytNoti() {
-		
+        // we are going to add an intent to open the camera here.
+        Intent cameraIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+        PendingIntent cameraPendingIntent =
+            PendingIntent.getActivity(this, 0, cameraIntent, 0);
 
-		//create the intent to launch the notiactivity, then the pentingintent.
-		Intent replyIntent = new Intent(this, VoiceNotiActivity.class);
-		replyIntent.putExtra("NotiID", "Notification ID is " + notificationID);
-		
-		PendingIntent replyPendingIntent =
-		        PendingIntent.getActivity(this, 0, replyIntent, 0);
-		
-		// create the remote input part for the notification.
-		RemoteInput remoteInput = new RemoteInput.Builder(EXTRA_VOICE_REPLY)
-        .setLabel("Reply")
-        .build();
-		
-		
-		// Create the reply action and add the remote input
-		NotificationCompat.Action action =
-		        new NotificationCompat.Action.Builder(R.drawable.ic_action_map,
-		                "Reply", replyPendingIntent)
-		                .addRemoteInput(remoteInput)
-		                .build();
+        // Create the action
+        NotificationCompat.Action action =
+            new NotificationCompat.Action.Builder(R.drawable.ic_action_time,
+                "take a Picutre", cameraPendingIntent)
+                .build();
 
 
+        //Now create the notification.  We must use the NotificationCompat or it will not work on the wearable.
+        NotificationCompat.Builder notificationBuilder =
+            new NotificationCompat.Builder(this, id)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle("add button Noti")
+                .setContentText("swipe left to open camera.")
+                .setContentIntent(viewPendingIntent)
+                .setChannelId(id)
+                .extend(new WearableExtender().addAction(action));
 
-		//Now create the notification.  We must use the NotificationCompat or it will not work on the wearable.
-		NotificationCompat.Builder notificationBuilder =
-		        new NotificationCompat.Builder(this)
-		        .setSmallIcon(R.drawable.ic_launcher)
-		        .setContentTitle("reply Noti")
-		        .setContentText("voice reply example.")
-		        .extend(new WearableExtender().addAction(action));
+        // Get an instance of the NotificationManager service
+        NotificationManagerCompat notificationManager =
+            NotificationManagerCompat.from(this);
 
-		// Get an instance of the NotificationManager service
-		NotificationManagerCompat notificationManager =
-		        NotificationManagerCompat.from(this);
+        // Build the notification and issues it with notification manager.
+        notificationManager.notify(notificationID, notificationBuilder.build());
+        notificationID++;
+    }
 
-		// Build the notification and issues it with notification manager.
-		notificationManager.notify(notificationID, notificationBuilder.build());
-		notificationID++;
-		
-	}
+    /*
+     * using the bigtext notificiation.
+     */
+    void bigTextNoti() {
+        //create the intent to launch the notiactivity, then the pentingintent.
+        Intent viewIntent = new Intent(this, NotiActivity.class);
+        viewIntent.putExtra("NotiID", "Notification ID is " + notificationID);
+
+        PendingIntent viewPendingIntent =
+            PendingIntent.getActivity(this, 0, viewIntent, 0);
+
+        BigTextStyle bigStyle = new NotificationCompat.BigTextStyle();
+        bigStyle.bigText("Big text style.\n"
+            + "We should have more room to add text for the user to read, instead of a short message.");
+
+
+        //Now create the notification.  We must use the NotificationCompat or it will not work on the wearable.
+        NotificationCompat.Builder notificationBuilder =
+            new NotificationCompat.Builder(this, id)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle("Simple Noti")
+                .setContentText("This is a simple notification")
+                .setContentIntent(viewPendingIntent)
+                .setChannelId(id)
+                .setStyle(bigStyle);
+
+        // Get an instance of the NotificationManager service
+        NotificationManagerCompat notificationManager =
+            NotificationManagerCompat.from(this);
+
+        // Build the notification and issues it with notification manager.
+        notificationManager.notify(notificationID, notificationBuilder.build());
+        notificationID++;
+    }
+
+
+    /*
+     * This adds the voice response for the wearable device.
+     * It comes back via an intent, which is shown in voiceNotiActivity.
+     */
+    void voiceReplytNoti() {
+
+
+        //create the intent to launch the notiactivity, then the pentingintent.
+        Intent replyIntent = new Intent(this, VoiceNotiActivity.class);
+        replyIntent.putExtra("NotiID", "Notification ID is " + notificationID);
+
+        PendingIntent replyPendingIntent =
+            PendingIntent.getActivity(this, 0, replyIntent, 0);
+
+        // create the remote input part for the notification.
+        RemoteInput remoteInput = new RemoteInput.Builder(EXTRA_VOICE_REPLY)
+            .setLabel("Reply")
+            .build();
+
+
+        // Create the reply action and add the remote input
+        NotificationCompat.Action action =
+            new NotificationCompat.Action.Builder(R.drawable.ic_action_map,
+                "Reply", replyPendingIntent)
+                .addRemoteInput(remoteInput)
+                .build();
+
+
+        //Now create the notification.  We must use the NotificationCompat or it will not work on the wearable.
+        NotificationCompat.Builder notificationBuilder =
+            new NotificationCompat.Builder(this, id)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle("reply Noti")
+                .setContentText("voice reply example.")
+                .setChannelId(id)
+                .extend(new WearableExtender().addAction(action));
+
+        // Get an instance of the NotificationManager service
+        NotificationManagerCompat notificationManager =
+            NotificationManagerCompat.from(this);
+
+        // Build the notification and issues it with notification manager.
+        notificationManager.notify(notificationID, notificationBuilder.build());
+        notificationID++;
+
+    }
+
+
+    /*
+* for API 26+ create notification channels
+*/
+    private void createchannel() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationChannel mChannel = new NotificationChannel(id,
+                getString(R.string.channel_name),  //name of the channel
+                NotificationManager.IMPORTANCE_DEFAULT);   //importance level
+            //important level: default is is high on the phone.  high is urgent on the phone.  low is medium, so none is low?
+            // Configure the notification channel.
+            mChannel.setDescription(getString(R.string.channel_description));
+            mChannel.enableLights(true);
+            //Sets the notification light color for notifications posted to this channel, if the device supports this feature.
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setShowBadge(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            nm.createNotificationChannel(mChannel);
+
+        }
+    }
+
 }
