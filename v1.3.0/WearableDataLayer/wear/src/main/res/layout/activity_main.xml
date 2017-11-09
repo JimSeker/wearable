@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.wearable.view.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    tools:deviceIds="wear">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/wrbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="send message" />
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_square" />
+    </LinearLayout>
+</android.support.wearable.view.BoxInsetLayout>
+

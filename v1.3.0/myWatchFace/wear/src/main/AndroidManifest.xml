@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="edu.cs4730.mywatchface" >
+
+    <uses-feature android:name="android.hardware.type.watch" />
+
+    <uses-permission android:name="com.google.android.permission.PROVIDE_BACKGROUND" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.DeviceDefault" >
+        <service
+            android:name=".myWatchFaceService"
+            android:allowEmbedded="true"
+            android:label="myWatchFace"
+            android:permission="android.permission.BIND_WALLPAPER"
+            android:taskAffinity="" >
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview"
+                android:resource="@drawable/preview_digital" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview_circular"
+                android:resource="@drawable/preview_digital_circular" />
+
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".beerWatchFaceService"
+            android:allowEmbedded="true"
+            android:label="Beer Time"
+            android:permission="android.permission.BIND_WALLPAPER"
+            android:taskAffinity="" >
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview"
+                android:resource="@drawable/preview_beer" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview_circular"
+                android:resource="@drawable/preview_beer_circular" />
+
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".BatmanWatchFaceService"
+            android:label="@string/my_digital_name"
+            android:permission="android.permission.BIND_WALLPAPER" >
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview"
+                android:resource="@drawable/preview_batman" />
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview_circular"
+                android:resource="@drawable/preview_batman_circular" />
+
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+    </application>
+
+</manifest>
