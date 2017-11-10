@@ -5,9 +5,6 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_centerHorizontal="false"
-    android:layout_centerInParent="false"
-    android:layout_centerVertical="false"
     tools:context="edu.cs4730.wearsensorsdemo.MainActivity"
     tools:deviceIds="wear">
 
