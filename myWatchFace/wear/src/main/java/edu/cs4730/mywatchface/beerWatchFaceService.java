@@ -61,11 +61,7 @@ public class beerWatchFaceService extends CanvasWatchFaceService {
             /* initialize your watch face */
 
             setWatchFaceStyle(new WatchFaceStyle.Builder(beerWatchFaceService.this)
-                    .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
-                    .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
-                    .setShowSystemUiTime(false)  //we are NOT showing the actual time
-                    .setStatusBarGravity(Gravity.TOP | Gravity.RIGHT) //where the battery and connect icons shows.
-                    .setHotwordIndicatorGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL)  //where 'OK google' shows
+                    .setStatusBarGravity(Gravity.TOP | Gravity.END) //where the battery and connect icons shows.
                     .build());
             //setup initial Paint colors.
             mBackgroundPaint = new Paint();

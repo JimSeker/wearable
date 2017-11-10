@@ -9,7 +9,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.wearable.watchface.CanvasWatchFaceService;
-import android.support.wearable.watchface.WatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,7 +18,6 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.SurfaceHolder;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.WindowInsets;
@@ -62,9 +60,9 @@ public class myWatchFaceService extends CanvasWatchFaceService {
         static final String COLON_STRING = ":";
 
         /** Handler to update the time periodically in interactive mode. */
-        final Handler mUpdateTimeHandler = new Handler() {
+        final Handler mUpdateTimeHandler = new Handler(new Handler.Callback() {
             @Override
-            public void handleMessage(Message message) {
+            public boolean handleMessage(Message message) {
                 switch (message.what) {
                     case MSG_UPDATE_TIME:
                         if (Log.isLoggable(TAG, Log.VERBOSE)) {
@@ -79,8 +77,9 @@ public class myWatchFaceService extends CanvasWatchFaceService {
                         }
                         break;
                 }
+                return true;
             }
-        };
+        });
 
         //we need a broadcast receiver to deal with a timezone change.
         final BroadcastReceiver mTimeZoneReceiver =  new BroadcastReceiver() {
@@ -123,12 +122,7 @@ public class myWatchFaceService extends CanvasWatchFaceService {
             /* initialize your watch face */
 
             setWatchFaceStyle(new WatchFaceStyle.Builder(myWatchFaceService.this)
-                    .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
-                    .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
-                    .setShowSystemUiTime(false)  //we are showing the time, so it doesn't need too.
-                    .setStatusBarGravity(Gravity.TOP | Gravity.RIGHT) //where the battery and connect icons shows.
-                    .setHotwordIndicatorGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL)  //where 'OK google' shows
-                    .setViewProtection(WatchFaceStyle.PROTECT_STATUS_BAR)  //background for the status bar, assuming light background too.
+                    .setStatusBarGravity(Gravity.TOP | Gravity.END) //where the battery and connect icons shows.
                     .build());
 
             //setup access to the resources.
