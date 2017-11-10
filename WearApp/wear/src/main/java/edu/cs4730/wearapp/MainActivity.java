@@ -2,12 +2,24 @@ package edu.cs4730.wearapp;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.wearable.view.WatchViewStub;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.Random;
+
+/*
+  * simple app that shows random number.
+  *
+  * Note there is a round, notround, and layout directory.  in support.wear it will now select the
+  * "correct" one.  It square uses notround, round uses round and layout appears unused in the wear.
+  *
+  * bluetooth debugging: https://developer.android.com/training/wearables/apps/debugging.html
+  *
+  * remember these gpt bluetooth:
+  * adb forward tcp:4444 localabstract:/adb-hub
+    adb connect 127.0.0.1:4444
+ */
 
 public class MainActivity extends Activity {
 
@@ -19,25 +31,16 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
-        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
+        mTextView = (TextView) findViewById(R.id.text);
+        mTextView.setText("   " + myRandom.nextInt(10) + " ");
+        //get the imagebutton (checkmark) and set up the listener for a random number.
+        ib = (ImageButton) findViewById(R.id.myButton);
+        ib.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onLayoutInflated(WatchViewStub stub) {
-                //finally we can setup the watch views and set the listener for the button.
-                mTextView = (TextView) stub.findViewById(R.id.text);
+            public void onClick(View v) {
                 mTextView.setText("   " + myRandom.nextInt(10) + " ");
-                //get the imagebutton (checkmark) and set up the listener for a random number.
-                ib = (ImageButton) stub.findViewById(R.id.myButton);
-                ib.setOnClickListener(new View.OnClickListener() {
 
-                    @Override
-                    public void onClick(View v) {
-                        mTextView.setText("   " + myRandom.nextInt(10) + " ");
-
-                    }
-
-
-                });
             }
         });
     }

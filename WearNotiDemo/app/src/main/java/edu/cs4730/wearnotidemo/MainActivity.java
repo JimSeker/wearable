@@ -115,21 +115,34 @@ public class MainActivity extends AppCompatActivity {
             PendingIntent.getActivity(this, 0, viewIntent, 0);
 
         // we are going to add an intent to open the camera here.
-        Intent cameraIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+        //Intent cameraIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         PendingIntent cameraPendingIntent =
             PendingIntent.getActivity(this, 0, cameraIntent, 0);
 
+        NotificationCompat.Action.WearableExtender inlineActionForWear2 =
+            new NotificationCompat.Action.WearableExtender()
+                .setHintDisplayActionInline(true)
+                .setHintLaunchesActivity(true);
+
+        // Add an action to allow replies.
+        NotificationCompat.Action pictureAction =
+            new NotificationCompat.Action.Builder(
+                R.drawable.ic_action_time,
+                "Open Camera",
+                cameraPendingIntent)
+                .extend(inlineActionForWear2)
+                .build();
 
         //Now create the notification.  We must use the NotificationCompat or it will not work on the wearable.
         NotificationCompat.Builder notificationBuilder =
             new NotificationCompat.Builder(this, id)
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentTitle("add button Noti")
-                .setContentText("swipe left to open camera.")
+                .setContentText("Tap for full message.")
                 .setContentIntent(viewPendingIntent)
                 .setChannelId(id)
-                .addAction(R.drawable.ic_action_time,
-                    "take Picutre", cameraPendingIntent);
+                .addAction(pictureAction );
 
         // Get an instance of the NotificationManager service
         NotificationManagerCompat notificationManager =
@@ -142,8 +155,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-     * This adds the button so it only shows on the wearable device and not
-     * the phone notification.
+     * Both the phone and wear will have a notification.  This adds the button so it only shows
+     * on the wearable device and not the phone notification.
      */
     void onlywearableNoti() {
         //create the intent to launch the notiactivity, then the pentingintent.
@@ -161,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         // Create the action
         NotificationCompat.Action action =
             new NotificationCompat.Action.Builder(R.drawable.ic_action_time,
-                "take a Picutre", cameraPendingIntent)
+                "Open Camera", cameraPendingIntent)
                 .build();
 
 
@@ -169,8 +182,8 @@ public class MainActivity extends AppCompatActivity {
         NotificationCompat.Builder notificationBuilder =
             new NotificationCompat.Builder(this, id)
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle("add button Noti")
-                .setContentText("swipe left to open camera.")
+                .setContentTitle("Button on Wear Only")
+                .setContentText("tap to open message")
                 .setContentIntent(viewPendingIntent)
                 .setChannelId(id)
                 .extend(new WearableExtender().addAction(action));

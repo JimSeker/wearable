@@ -24,12 +24,12 @@
         android:id="@+id/addactionButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="addAction Notification" />
+        android:text="add Action Notification" />
     <Button
         android:id="@+id/onlywearableButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="only on wearable Notification" />
+        android:text="button only on wearable Notification" />
     <Button
         android:id="@+id/bigtextButton"
         android:layout_width="fill_parent"
@@ -39,5 +39,5 @@
         android:id="@+id/voicereplyButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Vioce Reply Notification" />
+        android:text="Voice Reply Notification" />
 </LinearLayout>
