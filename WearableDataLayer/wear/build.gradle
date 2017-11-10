@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.1"
 
     defaultConfig {
         applicationId "edu.cs4730.wearabledatalayer"
-        minSdkVersion 21
-        targetSdkVersion 26
+        minSdkVersion 23
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
     }
@@ -25,4 +25,5 @@ dependencies {
     provided 'com.google.android.wearable:wearable:2.1.0'
     compile 'com.google.android.support:wearable:2.1.0'
     compile 'com.google.android.gms:play-services-wearable:11.6.0'
+    compile 'com.android.support:wear:27.0.0'
 }

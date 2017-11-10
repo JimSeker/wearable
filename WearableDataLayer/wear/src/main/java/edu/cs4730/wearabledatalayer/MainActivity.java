@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.wearable.view.WatchViewStub;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,8 +33,8 @@ import com.google.android.gms.wearable.Wearable;
 
 
 public class MainActivity extends Activity implements
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener {
+    GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener {
     GoogleApiClient googleClient;
     private final static String TAG = "Wear MainActivity";
     private TextView mTextView;
@@ -67,10 +66,10 @@ public class MainActivity extends Activity implements
 
         // Build a new GoogleApiClient that includes the Wearable API
         googleClient = new GoogleApiClient.Builder(this)
-                .addApi(Wearable.API)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .build();
+            .addApi(Wearable.API)
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener(this)
+            .build();
     }
 
     public class MessageReceiver extends BroadcastReceiver {
