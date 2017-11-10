@@ -93,9 +93,6 @@ public class MyTapFace extends CanvasWatchFaceService {
             super.onCreate(holder);
 
             setWatchFaceStyle(new WatchFaceStyle.Builder(MyTapFace.this)
-                    .setCardPeekMode(WatchFaceStyle.PEEK_MODE_VARIABLE)
-                    .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
-                    .setShowSystemUiTime(false)
                     .setAcceptsTapEvents(true)  //turn on the tap events.
                     .build());
             Resources resources = MyTapFace.this.getResources();
