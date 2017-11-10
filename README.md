@@ -3,10 +3,9 @@ Android wearable Examples
 
 eclipse/ is old examples in the eclipse format for wear v1.0.0 
 
-v1.3.0/ are some of these examples halted at v1.3.0, since v2.1 and support.wear changes/depricated the APIs.
+v1.3.0/ are some of these examples halted at v1.3.0, since v2.1 and support.wear changes/deprecated the APIs.
 
 <b>WearNotiDemo</b> example of how to send notifications to the wearable device.  Should work on all versions of wear 1.0+ and 2.0.0
-
 
 <b>myWatchFace</b> several examples of watch faces for the wear device. uses wear 2.1  api 21+
 
@@ -14,7 +13,7 @@ v1.3.0/ are some of these examples halted at v1.3.0, since v2.1 and support.wear
 
 <b> All examples below are using Wear 2.1+ with support.wear 27+   This requires the min API of 23 for all the wear examples</b>
 
-<b>WearApp</b> is an app to run the watch, that has a button to show a random number.  
+<b>WearApp</b> is an example of standalone app for the watch. It has a button to show a random number.  
 
 <b>WearSensorsDemo</b> is an example of using the sensor (Game Rotation vector).
 
