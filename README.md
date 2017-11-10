@@ -11,9 +11,7 @@ v1.3.0/ is many of these examples halted at v1.3.0, since v2.1 and support.wear 
 
 <b>TapEventsDemo</b> a simple watchface to demo the tapevents added in wear 1.3.0 (setup for v2.0.0 now)
 
-<b>WearApp</b> is an app to run the watch, that has a button to show a random number.  Uses a StudView to display round/square  (wear v2.0.0 ready)
-
-<b>WearAppv23</b> is an app to run the watch, that has a button to show a random number.  Uses a layout-round layout-notround (for v23+) to display round/square.  (wear v2.0.0 ready)
+<b>WearApp</b> is an app to run the watch, that has a button to show a random number.  uses support.wear and wear 2.1.0
 
 <b>WearSensorsDemo</b> is an example of using the sensor (Game Rotation vector). (wear v2.0.0 ready)
 
