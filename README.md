@@ -21,6 +21,8 @@ v1.3.0/ are some of these examples halted at v1.3.0, since v2.1 and support.wear
 
 <b>WearableDataLayer2</b> is an example of how send messages back and forth between the wear app and a phone app using the data layer in google-playservices.  You will need to install the wear app on to the wear device.  Install the mobile app on the phone/tablet device that is connected to the wear device.  The listeners for the data are in the mainactivity. Uses send messages (not send data).
 
+<b>WearableDataLayer3</b> is an example of how send data back and forth between the wear app and a phone app using the data layer in google-playservices.  You will need to install the wear app on to the wear device.  Install the mobile app on the phone/tablet device that is connected to the wear device.  It sends via the data commands, which is a broadcast, instead of the send message command.
+
 <b>WearAppVoice</b> is a simple app to show how the voice recognizer works. Click the button to start the demo.   The App-provided Voice actions fails, since google has so badly documented it.   "Start Voice App" should work, but instead use "Open Voice App", after the ok Google command.  http://developer.android.com/training/wearables/apps/voice.html 
 
 
