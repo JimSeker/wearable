@@ -13,11 +13,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
+//import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
+
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /*
  * Wear Device code  so I can kept this straight.
@@ -32,10 +37,12 @@ import com.google.android.gms.wearable.Wearable;
  */
 
 
-public class MainActivity extends Activity implements
+public class MainActivity extends Activity
+    /*implements
     GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener {
-    GoogleApiClient googleClient;
+    GoogleApiClient.OnConnectionFailedListener */
+    {
+
     private final static String TAG = "Wear MainActivity";
     private TextView mTextView;
     Button myButton;
@@ -53,7 +60,7 @@ public class MainActivity extends Activity implements
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String message = "click Hello device " + num;
+                String message = "Hello device " + num;
                 //Requires a new thread to avoid blocking the UI
                 new SendThread(datapath, message).start();
                 num++;
@@ -64,12 +71,6 @@ public class MainActivity extends Activity implements
         MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, messageFilter);
 
-        // Build a new GoogleApiClient that includes the Wearable API
-        googleClient = new GoogleApiClient.Builder(this)
-            .addApi(Wearable.API)
-            .addConnectionCallbacks(this)
-            .addOnConnectionFailedListener(this)
-            .build();
     }
 
     public class MessageReceiver extends BroadcastReceiver {
@@ -91,25 +92,11 @@ public class MainActivity extends Activity implements
     @Override
     protected void onStart() {
         super.onStart();
-        googleClient.connect();
-    }
-
-
-    //needed to send a message back to the device.  hopefully.
-    @Override
-    public void onConnected(Bundle bundle) {
         connected = true;
+       // googleClient.connect();
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {
-        connected = false;
-    }
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        connected = false;
-    }
 
     //This actually sends the message to the wearable device.
     class SendThread extends Thread {
@@ -125,16 +112,39 @@ public class MainActivity extends Activity implements
         //sends the message via the thread.  this will send to all wearables connected, but
         //since there is (should only?) be one, so no problem.
         public void run() {
-            NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(googleClient).await();
-            for (Node node : nodes.getNodes()) {
-                MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(googleClient, node.getId(), path, message.getBytes()).await();
-                if (result.getStatus().isSuccess()) {
-                    Log.v(TAG, "SendThread: message send to " + node.getDisplayName());
+            //first get all the nodes, ie connected wearable devices.
+            Task<List<Node>> nodeListTask =
+                Wearable.getNodeClient(getApplicationContext()).getConnectedNodes();
+            try {
+                // Block on a task and get the result synchronously (because this is on a background
+                // thread).
+                List<Node> nodes = Tasks.await(nodeListTask);
 
-                } else {
-                    // Log an error
-                    Log.v(TAG, "SendThread: message failed to" + node.getDisplayName());
+                //Now send the message to each device.
+                for (Node node : nodes) {
+                    Task<Integer> sendMessageTask =
+                        Wearable.getMessageClient(MainActivity.this).sendMessage(node.getId(), path, message.getBytes());
+
+                    try {
+                        // Block on a task and get the result synchronously (because this is on a background
+                        // thread).
+                        Integer result = Tasks.await(sendMessageTask);
+                        Log.v(TAG, "SendThread: message send to " + node.getDisplayName());
+
+                    } catch (ExecutionException exception) {
+                        Log.e(TAG, "Task failed: " + exception);
+
+                    } catch (InterruptedException exception) {
+                        Log.e(TAG, "Interrupt occurred: " + exception);
+                    }
+
                 }
+
+            } catch (ExecutionException exception) {
+                Log.e(TAG, "Task failed: " + exception);
+
+            } catch (InterruptedException exception) {
+                Log.e(TAG, "Interrupt occurred: " + exception);
             }
         }
     }
