@@ -13,20 +13,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.os.Handler;
 import android.os.Message;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
-import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-/*
+/**
  * this is the main activity on the device/phone  (just to kept everything straight)
  *
  * The device will setup a listener to receive messages from the wear device and display them to the screen.
@@ -43,11 +38,8 @@ import java.util.concurrent.ExecutionException;
  */
 
 public class MainActivity extends AppCompatActivity implements
-    //GoogleApiClient.ConnectionCallbacks,
-    //    GoogleApiClient.OnConnectionFailedListener,
     View.OnClickListener {
 
-    // GoogleApiClient googleClient;
     String datapath = "/message_path";
     Button mybutton;
     TextView logger;
@@ -61,9 +53,9 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         //get the widgets
-        mybutton = (Button) findViewById(R.id.sendbtn);
+        mybutton = findViewById(R.id.sendbtn);
         mybutton.setOnClickListener(this);
-        logger = (TextView) findViewById(R.id.logger);
+        logger = findViewById(R.id.logger);
 
         //message handler for the send thread.
         handler = new Handler(new Handler.Callback() {

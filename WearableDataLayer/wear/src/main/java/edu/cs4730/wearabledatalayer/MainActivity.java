@@ -1,30 +1,24 @@
 package edu.cs4730.wearabledatalayer;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.google.android.gms.common.ConnectionResult;
-//import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
-import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
-
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-/*
+/**
  * Wear Device code  so I can kept this straight.
  *
  * This will receive messages (from a device/phone) via the datalayer (through the listener code)
@@ -34,29 +28,27 @@ import java.util.concurrent.ExecutionException;
  * if the wear device receives a message from the phone/device it will then send a message back
  * via the button on the wear device, it can also send a message to the device/phone as well.
  *    There is no auto response from the phone/device otherwise we would get caught in a loop!
+ *
+ * debuging over bluetooth.
+ * https://developer.android.com/training/wearables/apps/debugging.html
  */
 
 
-public class MainActivity extends Activity
-    /*implements
-    GoogleApiClient.ConnectionCallbacks,
-    GoogleApiClient.OnConnectionFailedListener */
-    {
+public class MainActivity extends WearableActivity {
 
     private final static String TAG = "Wear MainActivity";
     private TextView mTextView;
     Button myButton;
     int num = 1;
-    boolean connected = false;
     String datapath = "/message_path";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mTextView = (TextView) findViewById(R.id.text);
+        mTextView =  findViewById(R.id.text);
         //send a message from the wear.  This one will not have response.
-        myButton = (Button) findViewById(R.id.wrbutton);
+        myButton =  findViewById(R.id.wrbutton);
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,6 +63,8 @@ public class MainActivity extends Activity
         MessageReceiver messageReceiver = new MessageReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(messageReceiver, messageFilter);
 
+        // Enables Always-on
+        setAmbientEnabled();
     }
 
     public class MessageReceiver extends BroadcastReceiver {
@@ -87,16 +81,6 @@ public class MainActivity extends Activity
             num++;
         }
     }
-
-    // Connect to the data layer when the Activity starts
-    @Override
-    protected void onStart() {
-        super.onStart();
-        connected = true;
-       // googleClient.connect();
-    }
-
-
 
     //This actually sends the message to the wearable device.
     class SendThread extends Thread {
