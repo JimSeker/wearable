@@ -118,12 +118,12 @@
     <orderEntry type="library" name="com.android.support:support-core-ui-27.0.2" level="project" />
     <orderEntry type="library" name="com.android.support:support-compat-27.0.2" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-tasks-11.8.0" level="project" />
+    <orderEntry type="library" name="com.google.android.wearable:wearable:2.2.0@jar" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-wearable-license-11.8.0" level="project" />
-    <orderEntry type="library" name="com.google.android.wearable:wearable:2.1.0@jar" level="project" />
+    <orderEntry type="library" name="com.google.android.support:wearable-2.2.0" level="project" />
     <orderEntry type="library" name="com.android.support:recyclerview-v7-27.0.2" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-basement-license-11.8.0" level="project" />
     <orderEntry type="library" name="com.android.support:wear-27.0.2" level="project" />
-    <orderEntry type="library" name="com.google.android.support:wearable-2.1.0" level="project" />
     <orderEntry type="library" name="com.android.support:support-core-utils-27.0.2" level="project" />
     <orderEntry type="library" name="com.android.support:support-fragment-27.0.2" level="project" />
     <orderEntry type="library" name="com.google.android.gms:play-services-base-11.8.0" level="project" />

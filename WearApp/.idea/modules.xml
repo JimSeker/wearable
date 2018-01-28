@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/WearApp.iml" filepath="$PROJECT_DIR$/WearApp.iml" />
-      <module fileurl="file://C:\Users\seker\git\wearable\WearApp\WearApp.iml" filepath="C:\Users\seker\git\wearable\WearApp\WearApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/wear/wear.iml" filepath="$PROJECT_DIR$/wear/wear.iml" />
-      <module fileurl="file://C:\Users\seker\git\wearable\WearApp\wear\wear.iml" filepath="C:\Users\seker\git\wearable\WearApp\wear\wear.iml" />
     </modules>
   </component>
 </project>
