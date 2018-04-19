@@ -103,7 +103,7 @@ public class MainActivity extends WearableActivity implements
     }
 
     /**
-     * Sends the data, not this is a broadcast, so we will get the message as well.
+     * Sends the data, note this is a broadcast, so we will get the message as well.
      */
     private void sendData(String message) {
         PutDataMapRequest dataMap = PutDataMapRequest.create(datapath);
