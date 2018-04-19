@@ -1,7 +1,7 @@
 package edu.cs4730.wearapp;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.wearable.activity.WearableActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -21,7 +21,7 @@ import java.util.Random;
     adb connect 127.0.0.1:4444
  */
 
-public class MainActivity extends Activity {
+public class MainActivity extends WearableActivity {
 
     private TextView mTextView;
     Random myRandom = new Random();
@@ -43,5 +43,8 @@ public class MainActivity extends Activity {
 
             }
         });
+
+        // Enables Always-on
+        setAmbientEnabled();
     }
 }
