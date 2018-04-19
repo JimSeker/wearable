@@ -21,8 +21,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.google.android.gms:play-services-wearable:11.8.0'
-    compile 'com.google.android.support:wearable:2.2.0'
-    provided 'com.google.android.wearable:wearable:2.2.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.google.android.support:wearable:2.3.0'
+    implementation 'com.google.android.gms:play-services-wearable:15.0.0'
+    implementation 'com.android.support:percent:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    compileOnly 'com.google.android.wearable:wearable:2.3.0'
 }
