@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 29
 
     defaultConfig {
         applicationId "edu.cs4730.wearnotidemo"
-        minSdkVersion 18
-        targetSdkVersion 27
+        minSdkVersion 22
+        targetSdkVersion 29
     }
 
     buildTypes {
@@ -19,5 +18,5 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 }

@@ -8,20 +8,21 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.BigTextStyle;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.app.NotificationCompat.WearableExtender;
-import android.support.v4.app.RemoteInput;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationCompat.BigTextStyle;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.NotificationCompat.WearableExtender;
+import androidx.core.app.RemoteInput;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.View;
 
-/*
- * This example shows varying notifications that work on the wearable device as well as on the 
- * the phone.  
- * 
- * 
+/**
+ * This example shows varying notifications that work on the wearable device as well as on the
+ * the phone.
+ * <p>
  * Don't forget to use this command if running an emulator for wear.  Run everytime you connect the phone.
  * adb -d forward tcp:5601 tcp:5601
  */
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         createchannel();
     }
 
-    /*
+    /**
      * Just a simple notification that will show up on the wearable.
      * the user can swipe the notification to the left to reveal the Open action, which invokes the intent on the handheld device.
      */
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         notificationID++;
     }
 
-    /*
+    /**
      * This one adds a button to the notification.  launches the camera for this example.
      */
     void addbuttonNoti() {
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                 .setContentText("Tap for full message.")
                 .setContentIntent(viewPendingIntent)
                 .setChannelId(id)
-                .addAction(pictureAction );
+                .addAction(pictureAction);
 
         // Get an instance of the NotificationManager service
         NotificationManagerCompat notificationManager =
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    /*
+    /**
      * Both the phone and wear will have a notification.  This adds the button so it only shows
      * on the wearable device and not the phone notification.
      */
@@ -197,8 +198,8 @@ public class MainActivity extends AppCompatActivity {
         notificationID++;
     }
 
-    /*
-     * using the bigtext notificiation.
+    /**
+     * using the bigtext notification.
      */
     void bigTextNoti() {
         //create the intent to launch the notiactivity, then the pentingintent.
@@ -233,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /*
+    /**
      * This adds the voice response for the wearable device.
      * It comes back via an intent, which is shown in voiceNotiActivity.
      */
@@ -281,9 +282,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    /*
-* for API 26+ create notification channels
-*/
+    /**
+     * for API 26+ create notification channels
+     */
     private void createchannel() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
