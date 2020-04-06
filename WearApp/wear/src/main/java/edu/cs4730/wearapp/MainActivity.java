@@ -14,6 +14,9 @@ import java.util.Random;
   * Note there is a round, notround, and layout directory.  in support.wear it will now select the
   * "correct" one.  It square uses notround, round uses round and layout appears unused in the wear.
   *
+  * remember for emulators, first turn debugging on in the emulator and then
+  * adb -d forward tcp:5601 tcp:5601   and then the real phone can connect to an emulated device.
+  *
   * bluetooth debugging: https://developer.android.com/training/wearables/apps/debugging.html
   *
   * remember these gpt bluetooth:

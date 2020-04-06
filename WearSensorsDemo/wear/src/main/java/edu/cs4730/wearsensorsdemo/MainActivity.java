@@ -7,12 +7,13 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
-import android.support.wear.widget.BoxInsetLayout;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+
+import androidx.wear.widget.BoxInsetLayout;
 
 
 public class MainActivity extends WearableActivity {

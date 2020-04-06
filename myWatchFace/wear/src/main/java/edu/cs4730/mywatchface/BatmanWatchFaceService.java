@@ -43,6 +43,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * Digital watch face with seconds. In ambient mode, the seconds aren't displayed. On devices with
  * low-bit ambient mode, the text is drawn without anti-aliasing in ambient mode.
+ *
+ * remember for emulators, first turn debugging on in the emulator and then
+ * adb -d forward tcp:5601 tcp:5601   and then the real phone can connect to an emulated device.
  */
 public class BatmanWatchFaceService extends CanvasWatchFaceService {
     private static final Typeface NORMAL_TYPEFACE =
