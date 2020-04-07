@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 29
+
 
     defaultConfig {
         applicationId "edu.cs4730.wearabledatalayer"
         minSdkVersion 23
-        targetSdkVersion 27
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
@@ -22,9 +22,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     wearApp project(':wear')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:percent:27.1.1'
-    implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.android.support:recyclerview-v7:27.1.1'
-    implementation 'com.google.android.gms:play-services-wearable:15.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+ //   implementation 'androidx.percentlayout:percentlayout:1.0.0'
+ //   implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+ //   implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.google.android.gms:play-services-wearable:17.0.0'
 }
+
