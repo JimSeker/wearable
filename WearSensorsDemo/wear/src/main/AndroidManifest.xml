@@ -15,11 +15,14 @@
         <uses-library
             android:name="com.google.android.wearable"
             android:required="false" />
+        <meta-data
+            android:name="com.google.android.wearable.standalone"
+            android:value="true"/>
 
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.DeviceDefault.Light">
+            android:theme="@android:style/Theme.DeviceDefault">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
