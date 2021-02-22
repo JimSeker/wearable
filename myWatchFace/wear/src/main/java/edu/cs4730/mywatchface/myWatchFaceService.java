@@ -24,6 +24,8 @@ import android.view.WindowInsets;
 
 import java.util.TimeZone;
 
+import androidx.core.content.ContextCompat;
+
 import static android.graphics.Color.*;
 
 /*
@@ -137,8 +139,8 @@ public class myWatchFaceService extends CanvasWatchFaceService {
             mHourPaint = createTextPaint(mInteractiveHourDigitsColor, BOLD_TYPEFACE);
             mMinutePaint = createTextPaint(mInteractiveMinuteDigitsColor);
             mSecondPaint = createTextPaint(mInteractiveSecondDigitsColor);
-            mAmPmPaint = createTextPaint(resources.getColor(R.color.digital_am_pm));
-            mColonPaint = createTextPaint(resources.getColor(R.color.digital_colons));
+            mAmPmPaint = createTextPaint(ContextCompat.getColor(getApplicationContext(), R.color.digital_am_pm));
+            mColonPaint = createTextPaint(ContextCompat.getColor(getApplicationContext(),R.color.digital_colons));
 
             //setup init time.
 

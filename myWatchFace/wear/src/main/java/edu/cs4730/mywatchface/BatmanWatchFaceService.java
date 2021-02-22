@@ -32,24 +32,26 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
-import android.text.format.Time;
 import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
 
+import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Digital watch face with seconds. In ambient mode, the seconds aren't displayed. On devices with
  * low-bit ambient mode, the text is drawn without anti-aliasing in ambient mode.
- *
+ * <p>
  * remember for emulators, first turn debugging on in the emulator and then
  * adb -d forward tcp:5601 tcp:5601   and then the real phone can connect to an emulated device.
  */
 public class BatmanWatchFaceService extends CanvasWatchFaceService {
     private static final Typeface NORMAL_TYPEFACE =
-            Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
+        Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
 
     /**
      * Update rate in milliseconds for interactive mode. We update once a second since seconds are
@@ -77,7 +79,7 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
                         if (shouldTimerBeRunning()) {
                             long timeMs = System.currentTimeMillis();
                             long delayMs = INTERACTIVE_UPDATE_RATE_MS
-                                    - (timeMs % INTERACTIVE_UPDATE_RATE_MS);
+                                - (timeMs % INTERACTIVE_UPDATE_RATE_MS);
                             mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs);
                         }
                         break;
@@ -89,8 +91,8 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
         final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                mTime.clear(intent.getStringExtra("time-zone"));
-                mTime.setToNow();
+                mCalendar.setTimeZone(TimeZone.getDefault());
+                invalidate();
             }
         };
 
@@ -101,7 +103,8 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
 
         boolean mAmbient;
 
-        Time mTime;
+        //Time mTime;
+        private Calendar mCalendar;
 
         Bitmap bm_c, bm_bw;
         float mXOffset;
@@ -117,25 +120,25 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
-                //see https://developer.android.com/reference/android/support/wearable/watchface/WatchFaceStyle.Builder.html for more info on the methods use
-                //in the next command
+            //see https://developer.android.com/reference/android/support/wearable/watchface/WatchFaceStyle.Builder.html for more info on the methods use
+            //in the next command
             setWatchFaceStyle(new WatchFaceStyle.Builder(BatmanWatchFaceService.this)
-                    .setStatusBarGravity(Gravity.TOP | Gravity.END) //where the battery and connect icons shows.
-                    .build());
+                .setStatusBarGravity(Gravity.TOP | Gravity.END) //where the battery and connect icons shows.
+                .build());
             Resources resources = BatmanWatchFaceService.this.getResources();
             mYOffset = resources.getDimension(R.dimen.digital_y_offset);
 
-            bm_c = BitmapFactory.decodeResource(resources,R.drawable.batman2c);
-            bm_bw = BitmapFactory.decodeResource(resources,R.drawable.batman2bw);
+            bm_c = BitmapFactory.decodeResource(resources, R.drawable.batman2c);
+            bm_bw = BitmapFactory.decodeResource(resources, R.drawable.batman2bw);
             mBackgroundPaint = new Paint();
-            mBackgroundPaint.setColor(resources.getColor(R.color.digital_background));
+            mBackgroundPaint.setColor(ContextCompat.getColor(getApplicationContext(), R.color.digital_background));
 
             mTextPaint_time = new Paint();
-            mTextPaint_time = createTextPaint(resources.getColor(R.color.digital_text));
+            mTextPaint_time = createTextPaint(ContextCompat.getColor(getApplicationContext(), R.color.digital_text));
             mTextPaint_date = new Paint();
-            mTextPaint_date = createTextPaint(resources.getColor(R.color.digital_text));
+            mTextPaint_date = createTextPaint(ContextCompat.getColor(getApplicationContext(), R.color.digital_text));
 
-            mTime = new Time();
+            mCalendar = Calendar.getInstance();
         }
 
         @Override
@@ -160,8 +163,8 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
                 registerReceiver();
 
                 // Update time zone in case it changed while we weren't visible.
-                mTime.clear(TimeZone.getDefault().getID());
-                mTime.setToNow();
+                mCalendar.setTimeZone(TimeZone.getDefault());
+                invalidate();
             } else {
                 unregisterReceiver();
             }
@@ -196,14 +199,14 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
             Resources resources = BatmanWatchFaceService.this.getResources();
             boolean isRound = insets.isRound();
             mXOffset = resources.getDimension(isRound
-                    ? R.dimen.digital_x_offset_round : R.dimen.digital_x_offset);
+                ? R.dimen.digital_x_offset_round : R.dimen.digital_x_offset);
             //time size
             float textSize = resources.getDimension(isRound
-            //        ? R.dimen.digital_text_size_round : R.dimen.digital_text_size);
-                    ? R.dimen.date_text_size_round : R.dimen.date_text_size);
+                //        ? R.dimen.digital_text_size_round : R.dimen.digital_text_size);
+                ? R.dimen.date_text_size_round : R.dimen.date_text_size);
             //date size.
             float datetextSize = resources.getDimension(isRound
-                    ? R.dimen.date_text_size_round : R.dimen.date_text_size);
+                ? R.dimen.date_text_size_round : R.dimen.date_text_size);
 
             mTextPaint_date.setTextSize(datetextSize);
             mTextPaint_time.setTextSize(textSize);
@@ -212,21 +215,20 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
             Rect bounds = new Rect();
 
             String text = "13:40:45";  //sample time
-            mTextPaint_time.getTextBounds(text, 0, text.length(), bounds );
+            mTextPaint_time.getTextBounds(text, 0, text.length(), bounds);
             time_height = bounds.height();
 
             time_width = bounds.width();
 
             text = "13:40";  //sample date ambient
-            mTextPaint_time.getTextBounds(text, 0, text.length(), bounds );
+            mTextPaint_time.getTextBounds(text, 0, text.length(), bounds);
             time_width_amb = bounds.width();
             time_height_amb = bounds.height();
 
             text = "02/27 Mon";  //sample date
-            mTextPaint_date.getTextBounds(text, 0, text.length(), bounds );
+            mTextPaint_date.getTextBounds(text, 0, text.length(), bounds);
             date_height = bounds.height();
             date_width = bounds.width();
-
 
 
         }
@@ -265,36 +267,39 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
             // Draw the background.
             canvas.drawRect(0, 0, bounds.width(), bounds.height(), mBackgroundPaint);
             int center_x, center_y;
-            center_x = bounds.width() /2;
-            center_y = bounds.height() /2;
+            center_x = bounds.width() / 2;
+            center_y = bounds.height() / 2;
 
 
             // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
-            mTime.setToNow();
+            long now = System.currentTimeMillis();
+            mCalendar.setTimeInMillis(now);
+
             String text = mAmbient
-                    ? String.format("%d:%02d", mTime.hour, mTime.minute)
-                    : String.format("%d:%02d:%02d", mTime.hour, mTime.minute, mTime.second);
+                ? String.format("%d:%02d", mCalendar.get(Calendar.HOUR), mCalendar.get(Calendar.HOUR))
+                : String.format("%d:%02d:%02d", mCalendar.get(Calendar.HOUR), mCalendar.get(Calendar.MINUTE), mCalendar.get(Calendar.SECOND));
             //to deal with the change in digits (and maybe at some point am/pm too).
             Rect mybounds = new Rect();
-            mTextPaint_time.getTextBounds(text, 0, text.length(), mybounds );
+            mTextPaint_time.getTextBounds(text, 0, text.length(), mybounds);
             time_height = mybounds.height();
             time_width = mybounds.width();
 
             //canvas.drawText(text, mXOffset, mYOffset, mTextPaint);
             //http://man7.org/linux/man-pages/man3/strftime.3.html for the format command info.
-            String Date = mTime.format("%m/%d %a");
+            String Date = String.format("%d/%d/%d", mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH), mCalendar.get(Calendar.YEAR));
+            //mTime.format("%m/%d %a");
             //canvas.drawText(Date, center_x - (date_width/2), center_y - 55 , mTextPaint_date);
-            canvas.drawText(text, center_x -(time_width/2), center_y -55, mTextPaint_time);
+            canvas.drawText(text, center_x - (time_width / 2), center_y - 55, mTextPaint_time);
             //draw picture, change if ambient to black and white version.
             if (mAmbient) {
                 canvas.drawBitmap(bm_bw, center_x - 84, center_y - 50, mBackgroundPaint);
                 //canvas.drawText(text, center_x -(time_width_amb/2), center_y + 55+ time_height_amb, mTextPaint_time);
-            }else {
+            } else {
                 canvas.drawBitmap(bm_c, center_x - 84, center_y - 50, mBackgroundPaint);
                 //canvas.drawText(text, center_x -(time_width/2), center_y + 55+ time_height, mTextPaint_time);
             }
             //canvas.drawText(text, center_x -(time_width/2), center_y + 55+ time_height, mTextPaint_time);
-            canvas.drawText(Date, center_x - (date_width/2), center_y + 55 + date_height, mTextPaint_date);
+            canvas.drawText(Date, center_x - (date_width / 2), center_y + 55 + date_height, mTextPaint_date);
 
         }
 
