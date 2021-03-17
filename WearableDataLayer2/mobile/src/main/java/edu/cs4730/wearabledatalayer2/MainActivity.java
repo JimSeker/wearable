@@ -2,8 +2,10 @@ package edu.cs4730.wearabledatalayer2;
 
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +22,7 @@ import com.google.android.gms.wearable.Wearable;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-/*
+/**
  * this is the main activity on the device/phone  (just to kept everything straight)
  *
  * The device will setup a local listener to receive messages from the wear device and display them to the screen.
@@ -41,7 +43,6 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity implements
     MessageClient.OnMessageReceivedListener,
     View.OnClickListener {
-
 
     String datapath = "/message_path";
     Button mybutton;
@@ -86,7 +87,6 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * This is a simple receiver add/removed in onResume/onPause
      * It receives the message from the wear device and displays to the screen.
-     *
      */
     @Override
     public void onMessageReceived(@NonNull MessageEvent messageEvent) {

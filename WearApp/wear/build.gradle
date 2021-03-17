@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "edu.cs4730.wearapp"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
