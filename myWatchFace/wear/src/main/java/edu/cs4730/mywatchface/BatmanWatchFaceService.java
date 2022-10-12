@@ -276,7 +276,7 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
             mCalendar.setTimeInMillis(now);
 
             String text = mAmbient
-                ? String.format("%d:%02d", mCalendar.get(Calendar.HOUR), mCalendar.get(Calendar.HOUR))
+                ? String.format("%d:%02d", mCalendar.get(Calendar.HOUR), mCalendar.get(Calendar.MINUTE))
                 : String.format("%d:%02d:%02d", mCalendar.get(Calendar.HOUR), mCalendar.get(Calendar.MINUTE), mCalendar.get(Calendar.SECOND));
             //to deal with the change in digits (and maybe at some point am/pm too).
             Rect mybounds = new Rect();
