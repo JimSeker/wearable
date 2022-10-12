@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "edu.cs4730.wearnotidemo"
-        minSdkVersion 22
-        targetSdkVersion 29
+        minSdkVersion 26
+        targetSdkVersion 33
     }
 
     buildTypes {
@@ -15,8 +15,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    namespace 'edu.cs4730.wearnotidemo'
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
 }
