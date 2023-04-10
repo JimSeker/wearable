@@ -1,11 +1,11 @@
 package edu.cs4730.wearapp;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.wearable.activity.WearableActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
+import edu.cs4730.wearapp.databinding.ActivityMainBinding;
 import java.util.Random;
 
 /*
@@ -23,8 +23,9 @@ import java.util.Random;
   * adb forward tcp:4444 localabstract:/adb-hub
     adb connect 127.0.0.1:4444
  */
+public class MainActivity extends Activity {
 
-public class MainActivity extends WearableActivity {
+    private ActivityMainBinding binding;
 
     private TextView mTextView;
     Random myRandom = new Random();
@@ -33,11 +34,14 @@ public class MainActivity extends WearableActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mTextView = (TextView) findViewById(R.id.text);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+
+        mTextView = binding.text;
         mTextView.setText("   " + myRandom.nextInt(10) + " ");
         //get the imagebutton (checkmark) and set up the listener for a random number.
-        ib = (ImageButton) findViewById(R.id.myButton);
+        ib = binding.myButton;
         ib.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -46,8 +50,5 @@ public class MainActivity extends WearableActivity {
 
             }
         });
-
-        // Enables Always-on
-        setAmbientEnabled();
     }
 }

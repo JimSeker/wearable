@@ -1,18 +1,12 @@
-Android wearable Examples
+Android wearable Examples for Wear 2.0
 ========
 
-`eclipse/` is old examples in the eclipse format for wear v1.0.0 
-
-`v1.3.0/` are some of these examples halted at v1.3.0, since v2.1 and support.wear changes/deprecated the APIs.
-
-`WearNotiDemo` example of how to send notifications to the wearable device.  Should work on all versions of wear 1.0+ and 2.x.+.  It was tested and working on Wear OS 1.0 device (wear v2.3.0 and Android OS 8.0.0).
 
 ` All examples below are using Wear 2.3+ with support.wear 27+.  This requires the min API of 23 for all the wear examples  Note, they were all tested and working on Wear OS 1.0 device (wear v2.3.0 and Android OS 8.0.0)`
 
 `myWatchFace` several examples of watch faces for the wear device. Can be degraded to API 21 and should still work.
 
 `TapEventsDemo` a simple watchface to demo the tapevents.  Can be degraded to API 21 and should still work.
-
 
 `WearApp` is an example of standalone app for the watch. It has a button to show a random number.  updated to wear 3.0
 

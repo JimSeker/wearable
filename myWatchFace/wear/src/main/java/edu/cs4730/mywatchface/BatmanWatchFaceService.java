@@ -1,46 +1,33 @@
-/*
- * Copyright (C) 2014 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package edu.cs4730.mywatchface;
 
-import android.content.BroadcastReceiver;
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.wearable.watchface.CanvasWatchFaceService;
-import android.support.wearable.watchface.WatchFaceStyle;
-import android.view.Gravity;
 import android.view.SurfaceHolder;
-import android.view.WindowInsets;
-
+import java.time.ZonedDateTime;
 import java.util.Calendar;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.wear.watchface.CanvasType;
+import androidx.wear.watchface.ComplicationSlotsManager;
+import androidx.wear.watchface.DrawMode;
+import androidx.wear.watchface.RenderParameters;
+import androidx.wear.watchface.Renderer;
+import androidx.wear.watchface.WatchFace;
+import androidx.wear.watchface.WatchFaceService;
+import androidx.wear.watchface.WatchFaceType;
+import androidx.wear.watchface.WatchState;
+import androidx.wear.watchface.style.CurrentUserStyleRepository;
+import kotlin.coroutines.Continuation;
 
 /**
  * Digital watch face with seconds. In ambient mode, the seconds aren't displayed. On devices with
@@ -49,82 +36,142 @@ import androidx.core.content.ContextCompat;
  * remember for emulators, first turn debugging on in the emulator and then
  * adb -d forward tcp:5601 tcp:5601   and then the real phone can connect to an emulated device.
  */
-public class BatmanWatchFaceService extends CanvasWatchFaceService {
+public class BatmanWatchFaceService extends WatchFaceService {
+
+    private static final Typeface BOLD_TYPEFACE =
+        Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD);
     private static final Typeface NORMAL_TYPEFACE =
         Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
 
-    /**
-     * Update rate in milliseconds for interactive mode. We update once a second since seconds are
-     * displayed in interactive mode.
-     */
-    private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
+    Paint mBackgroundPaint;
+    Paint mTextPaint_time, mTextPaint_date;
 
+    boolean mAmbient;
+
+    //Time mTime;
+    private Calendar mCalendar;
+
+    Bitmap bm_c, bm_bw;
+    float mXOffset;
+    float mYOffset;
+    int date_height, date_width, time_height, time_width, time_height_amb, time_width_amb;
+
+
+    @Nullable
     @Override
-    public Engine onCreateEngine() {
-        return new Engine();
+    protected WatchFace createWatchFace(@NonNull SurfaceHolder surfaceHolder,
+                                        @NonNull WatchState watchState,
+                                        @NonNull ComplicationSlotsManager complicationSlotsManager,
+                                        @NonNull CurrentUserStyleRepository currentUserStyleRepository,
+                                        @NonNull Continuation<? super WatchFace> continuation) {
+
+
+        return new WatchFace(
+            WatchFaceType.DIGITAL,
+            new  BatmanWatchFaceService.batmanCanvasRender(getApplicationContext(), surfaceHolder, watchState, complicationSlotsManager, currentUserStyleRepository, CanvasType.HARDWARE)
+        );
     }
 
-    private class Engine extends CanvasWatchFaceService.Engine {
-        static final int MSG_UPDATE_TIME = 0;
+    class batmanCanvasRender extends Renderer.CanvasRenderer2<batmanCanvasRender.batmanShareAssets> {
+        static private final long FRAME_PERIOD_MS_DEFAULT = 16L;
+        final boolean clearWithBackgroundTintBeforeRenderingHighlightLayer = false;
 
-        /**
-         * Handler to update the time periodically in interactive mode.
-         */
-        final Handler mUpdateTimeHandler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message message) {
-                switch (message.what) {
-                    case MSG_UPDATE_TIME:
-                        invalidate();
-                        if (shouldTimerBeRunning()) {
-                            long timeMs = System.currentTimeMillis();
-                            long delayMs = INTERACTIVE_UPDATE_RATE_MS
-                                - (timeMs % INTERACTIVE_UPDATE_RATE_MS);
-                            mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs);
-                        }
-                        break;
-                }
-                return true;
-            }
-        });
-
-        final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                mCalendar.setTimeZone(TimeZone.getDefault());
-                invalidate();
-            }
-        };
-
-        boolean mRegisteredTimeZoneReceiver = false;
-
+        Context context;
+        SurfaceHolder surfaceHolder;
+        WatchState watchState;
+        ComplicationSlotsManager complicationSlotsManager;
+        CurrentUserStyleRepository currentUserStyleRepository;
+        int canvasType;
         Paint mBackgroundPaint;
-        Paint mTextPaint_time, mTextPaint_date;
+        Paint mtextPaint;
 
-        boolean mAmbient;
+        @SuppressLint("DefaultLocale")
+        @Override
+        public void render(@NonNull Canvas canvas, @NonNull Rect bounds, @NonNull ZonedDateTime zonedDateTime, @NonNull batmanShareAssets batmanShareAssets) {
 
-        //Time mTime;
-        private Calendar mCalendar;
+            RenderParameters renderParameters = getRenderParameters();
+            mCalendar = Calendar.getInstance();
+            mAmbient = renderParameters.getDrawMode() == DrawMode.AMBIENT;
 
-        Bitmap bm_c, bm_bw;
-        float mXOffset;
-        float mYOffset;
-        int date_height, date_width, time_height, time_width, time_height_amb, time_width_amb;
+            //            /* draw your watch face */
+            // Draw the background.
+            canvas.drawRect(0, 0, bounds.width(), bounds.height(), mBackgroundPaint);
+            int center_x, center_y;
+            center_x = bounds.width() / 2;
+            center_y = bounds.height() / 2;
 
-        /**
-         * Whether the display supports fewer bits for each color in ambient mode. When true, we
-         * disable anti-aliasing in ambient mode.
-         */
-        boolean mLowBitAmbient;
+
+            // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
+            long now = System.currentTimeMillis();
+            mCalendar.setTimeInMillis(now);
+
+
+            String text = mAmbient
+                ? String.format("%d:%02d", mCalendar.get(Calendar.HOUR), mCalendar.get(Calendar.MINUTE))
+                : String.format("%d:%02d:%02d", mCalendar.get(Calendar.HOUR), mCalendar.get(Calendar.MINUTE), mCalendar.get(Calendar.SECOND));
+            //to deal with the change in digits (and maybe at some point am/pm too).
+            Rect mybounds = new Rect();
+            mTextPaint_time.getTextBounds(text, 0, text.length(), mybounds);
+            time_height = mybounds.height();
+            time_width = mybounds.width();
+
+            //canvas.drawText(text, mXOffset, mYOffset, mTextPaint);
+            //http://man7.org/linux/man-pages/man3/strftime.3.html for the format command info.
+            String Date = String.format("%d/%d/%d", mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH), mCalendar.get(Calendar.YEAR));
+            //mTime.format("%m/%d %a");
+            //canvas.drawText(Date, center_x - (date_width/2), center_y - 55 , mTextPaint_date);
+            canvas.drawText(text, center_x - (time_width / 2f), center_y - 55, mTextPaint_time);
+            //draw picture, change if ambient to black and white version.
+            if (mAmbient) {
+                canvas.drawBitmap(bm_bw, center_x - 84, center_y - 50, mBackgroundPaint);
+                //canvas.drawText(text, center_x -(time_width_amb/2), center_y + 55+ time_height_amb, mTextPaint_time);
+            } else {
+                canvas.drawBitmap(bm_c, center_x - 84, center_y - 50, mBackgroundPaint);
+                //canvas.drawText(text, center_x -(time_width/2), center_y + 55+ time_height, mTextPaint_time);
+            }
+            //canvas.drawText(text, center_x -(time_width/2), center_y + 55+ time_height, mTextPaint_time);
+            canvas.drawText(Date, center_x - (date_width / 2f), center_y + 55 + date_height, mTextPaint_date);
+        }
 
         @Override
-        public void onCreate(SurfaceHolder holder) {
-            super.onCreate(holder);
-            //see https://developer.android.com/reference/android/support/wearable/watchface/WatchFaceStyle.Builder.html for more info on the methods use
-            //in the next command
-            setWatchFaceStyle(new WatchFaceStyle.Builder(BatmanWatchFaceService.this)
-                .setStatusBarGravity(Gravity.TOP | Gravity.END) //where the battery and connect icons shows.
-                .build());
+        public void renderHighlightLayer(@NonNull Canvas canvas, @NonNull Rect rect, @NonNull ZonedDateTime zonedDateTime, @NonNull batmanShareAssets batmanShareAssets) {
+
+        }
+
+
+        class batmanShareAssets implements SharedAssets {
+            @Override
+            public void onDestroy() {
+
+            }
+
+        }
+
+
+        private Paint createTextPaint(int textColor) {
+            Paint paint = new Paint();
+            paint.setColor(textColor);
+            paint.setTypeface(NORMAL_TYPEFACE);
+            paint.setAntiAlias(true);
+            return paint;
+        }
+
+        @Override
+        public batmanShareAssets createSharedAssets(@NonNull Continuation completion) {
+            return new batmanCanvasRender.batmanShareAssets();
+        }
+
+        public batmanCanvasRender(@NonNull Context mcontext, @NonNull SurfaceHolder msurfaceHolder, @NonNull WatchState mwatchState, @NonNull ComplicationSlotsManager mcomplicationSlotsManager, @NonNull final CurrentUserStyleRepository mcurrentUserStyleRepository, int mcanvasType) {
+            super(msurfaceHolder, mcurrentUserStyleRepository, mwatchState, mcanvasType, FRAME_PERIOD_MS_DEFAULT, false);
+
+            context = mcontext;
+            surfaceHolder = msurfaceHolder;
+            watchState = mwatchState;
+            complicationSlotsManager = mcomplicationSlotsManager;
+            currentUserStyleRepository = mcurrentUserStyleRepository;
+            canvasType = mcanvasType;
+
+            //setup initial Paint colors.
             Resources resources = BatmanWatchFaceService.this.getResources();
             mYOffset = resources.getDimension(R.dimen.digital_y_offset);
 
@@ -138,66 +185,8 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
             mTextPaint_date = new Paint();
             mTextPaint_date = createTextPaint(ContextCompat.getColor(getApplicationContext(), R.color.digital_text));
 
-            mCalendar = Calendar.getInstance();
-        }
 
-        @Override
-        public void onDestroy() {
-            mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
-            super.onDestroy();
-        }
-
-        private Paint createTextPaint(int textColor) {
-            Paint paint = new Paint();
-            paint.setColor(textColor);
-            paint.setTypeface(NORMAL_TYPEFACE);
-            paint.setAntiAlias(true);
-            return paint;
-        }
-
-        @Override
-        public void onVisibilityChanged(boolean visible) {
-            super.onVisibilityChanged(visible);
-
-            if (visible) {
-                registerReceiver();
-
-                // Update time zone in case it changed while we weren't visible.
-                mCalendar.setTimeZone(TimeZone.getDefault());
-                invalidate();
-            } else {
-                unregisterReceiver();
-            }
-
-            // Whether the timer should be running depends on whether we're visible (as well as
-            // whether we're in ambient mode), so we may need to start or stop the timer.
-            updateTimer();
-        }
-
-        private void registerReceiver() {
-            if (mRegisteredTimeZoneReceiver) {
-                return;
-            }
-            mRegisteredTimeZoneReceiver = true;
-            IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
-            BatmanWatchFaceService.this.registerReceiver(mTimeZoneReceiver, filter);
-        }
-
-        private void unregisterReceiver() {
-            if (!mRegisteredTimeZoneReceiver) {
-                return;
-            }
-            mRegisteredTimeZoneReceiver = false;
-            BatmanWatchFaceService.this.unregisterReceiver(mTimeZoneReceiver);
-        }
-
-        @Override
-        public void onApplyWindowInsets(WindowInsets insets) {
-            super.onApplyWindowInsets(insets);
-
-            // Load resources that have alternate values for round watches.
-            Resources resources = BatmanWatchFaceService.this.getResources();
-            boolean isRound = insets.isRound();
+            boolean isRound = true;  //how to check for round???
             mXOffset = resources.getDimension(isRound
                 ? R.dimen.digital_x_offset_round : R.dimen.digital_x_offset);
             //time size
@@ -233,93 +222,5 @@ public class BatmanWatchFaceService extends CanvasWatchFaceService {
 
         }
 
-        @Override
-        public void onPropertiesChanged(Bundle properties) {
-            super.onPropertiesChanged(properties);
-            mLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
-        }
-
-        @Override
-        public void onTimeTick() {
-            super.onTimeTick();
-            invalidate();
-        }
-
-        @Override
-        public void onAmbientModeChanged(boolean inAmbientMode) {
-            super.onAmbientModeChanged(inAmbientMode);
-            if (mAmbient != inAmbientMode) {
-                mAmbient = inAmbientMode;
-                if (mLowBitAmbient) {
-                    mTextPaint_date.setAntiAlias(!inAmbientMode);
-                    mTextPaint_time.setAntiAlias(!inAmbientMode);
-                }
-                invalidate();
-            }
-
-            // Whether the timer should be running depends on whether we're visible (as well as
-            // whether we're in ambient mode), so we may need to start or stop the timer.
-            updateTimer();
-        }
-
-        @Override
-        public void onDraw(Canvas canvas, Rect bounds) {
-            // Draw the background.
-            canvas.drawRect(0, 0, bounds.width(), bounds.height(), mBackgroundPaint);
-            int center_x, center_y;
-            center_x = bounds.width() / 2;
-            center_y = bounds.height() / 2;
-
-
-            // Draw H:MM in ambient mode or H:MM:SS in interactive mode.
-            long now = System.currentTimeMillis();
-            mCalendar.setTimeInMillis(now);
-
-            String text = mAmbient
-                ? String.format("%d:%02d", mCalendar.get(Calendar.HOUR), mCalendar.get(Calendar.MINUTE))
-                : String.format("%d:%02d:%02d", mCalendar.get(Calendar.HOUR), mCalendar.get(Calendar.MINUTE), mCalendar.get(Calendar.SECOND));
-            //to deal with the change in digits (and maybe at some point am/pm too).
-            Rect mybounds = new Rect();
-            mTextPaint_time.getTextBounds(text, 0, text.length(), mybounds);
-            time_height = mybounds.height();
-            time_width = mybounds.width();
-
-            //canvas.drawText(text, mXOffset, mYOffset, mTextPaint);
-            //http://man7.org/linux/man-pages/man3/strftime.3.html for the format command info.
-            String Date = String.format("%d/%d/%d", mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH), mCalendar.get(Calendar.YEAR));
-            //mTime.format("%m/%d %a");
-            //canvas.drawText(Date, center_x - (date_width/2), center_y - 55 , mTextPaint_date);
-            canvas.drawText(text, center_x - (time_width / 2), center_y - 55, mTextPaint_time);
-            //draw picture, change if ambient to black and white version.
-            if (mAmbient) {
-                canvas.drawBitmap(bm_bw, center_x - 84, center_y - 50, mBackgroundPaint);
-                //canvas.drawText(text, center_x -(time_width_amb/2), center_y + 55+ time_height_amb, mTextPaint_time);
-            } else {
-                canvas.drawBitmap(bm_c, center_x - 84, center_y - 50, mBackgroundPaint);
-                //canvas.drawText(text, center_x -(time_width/2), center_y + 55+ time_height, mTextPaint_time);
-            }
-            //canvas.drawText(text, center_x -(time_width/2), center_y + 55+ time_height, mTextPaint_time);
-            canvas.drawText(Date, center_x - (date_width / 2), center_y + 55 + date_height, mTextPaint_date);
-
-        }
-
-        /**
-         * Starts the {@link #mUpdateTimeHandler} timer if it should be running and isn't currently
-         * or stops it if it shouldn't be running but currently is.
-         */
-        private void updateTimer() {
-            mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
-            if (shouldTimerBeRunning()) {
-                mUpdateTimeHandler.sendEmptyMessage(MSG_UPDATE_TIME);
-            }
-        }
-
-        /**
-         * Returns whether the {@link #mUpdateTimeHandler} timer should be running. The timer should
-         * only run when we're visible and in interactive mode.
-         */
-        private boolean shouldTimerBeRunning() {
-            return isVisible() && !isInAmbientMode();
-        }
     }
 }
