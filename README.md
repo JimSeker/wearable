@@ -21,7 +21,9 @@ Android wearable Examples
 
 `WearableDataLayer3` is an example of how send data back and forth between the wear app and a phone app using the data layer in google-playservices.  You will need to install the wear app on to the wear device.  Install the mobile app on the phone/tablet device that is connected to the wear device.  It sends via the data commands, which is a broadcast, instead of the send message command.
 
-note wear 2 apps are being converted to wear 3 and added "soon".
+`WearAppVoice` is a simple app to show how the voice recognizer works. Click the button to start the demo.   The App-provided Voice actions fails, since Google has so badly documented it.   "Start Voice App" should work, but instead use "Open Voice App", after the ok Google command.  http://developer.android.com/training/wearables/apps/voice.html 
+
+`WearSensorsDemo` is an example of using the sensor (Game Rotation vector).
 
 ---
 
