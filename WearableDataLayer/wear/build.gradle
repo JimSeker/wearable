@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "edu.cs4730.wearabledatalayer"
-        minSdkVersion 23
-        targetSdkVersion 30
+        minSdkVersion 30
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
     }
@@ -21,10 +21,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    //do I still need this one?
-   // implementation 'com.google.android.support:wearable:2.9.0'
-
-    //these I need.
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
     implementation 'com.google.android.gms:play-services-wearable:18.0.0'
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
