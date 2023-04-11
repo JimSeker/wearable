@@ -10,6 +10,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
+
+/**
+ * simple example of voice recognition on the watch, assumes it has a mic.
+ *
+ * verified on a pixel watch.
+ */
 public class MainActivity extends Activity {
 
     private TextView mTextView;
