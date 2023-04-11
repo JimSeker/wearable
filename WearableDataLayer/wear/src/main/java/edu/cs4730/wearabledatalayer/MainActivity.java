@@ -35,6 +35,8 @@ import java.util.concurrent.ExecutionException;
  * <p>
  * debuging over bluetooth.
  * https://developer.android.com/training/wearables/apps/debugging.html
+ *
+ * verified to work on a pixel watch witha paired app on a pixel 4a phone.
  */
 
 
