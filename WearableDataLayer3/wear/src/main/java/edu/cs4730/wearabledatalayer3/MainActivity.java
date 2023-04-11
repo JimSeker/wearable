@@ -30,6 +30,8 @@ import com.google.android.gms.wearable.Wearable;
  * https://developer.android.com/training/wearables/apps/debugging.html
  * adb forward tcp:4444 localabstract:/adb-hub
  * adb connect 127.0.0.1:4444
+ *
+ * verified it works on a pixel watch and pixel 4a.
  */
 
 
