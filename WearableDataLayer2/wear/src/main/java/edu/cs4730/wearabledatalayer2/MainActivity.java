@@ -34,6 +34,8 @@ import java.util.concurrent.ExecutionException;
  * https://developer.android.com/training/wearables/apps/debugging.html
  * adb forward tcp:4444 localabstract:/adb-hub
  * adb connect 127.0.0.1:4444
+ *
+ * verified it works on pixel watch with a pixel 4a.
  */
 
 public class MainActivity extends Activity implements
