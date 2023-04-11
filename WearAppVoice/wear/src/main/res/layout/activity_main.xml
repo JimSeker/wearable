@@ -8,6 +8,12 @@
     tools:context="edu.cs4730.wearappvoice.MainActivity"
     tools:deviceIds="wear">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:boxedEdges="all">
     <Button
         android:id="@+id/wrbutton"
         android:layout_width="wrap_content"
@@ -19,4 +25,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_square" />
+    </LinearLayout>
 </androidx.wear.widget.BoxInsetLayout>
