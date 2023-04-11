@@ -19,6 +19,7 @@ import androidx.wear.widget.BoxInsetLayout;
 /**
  * This is a example of how to access the sensors.  it just displays them to the screen.
  *
+ * verified to work on pixel watch.
  */
 public class MainActivity extends AppCompatActivity implements AmbientModeSupport.AmbientCallbackProvider {
 
