@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 33
+
+
+    defaultConfig {
+        applicationId "edu.cs4730.wearabledatalayer"
+        minSdkVersion 30
+        targetSdkVersion 33
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    wearApp project(':wear')
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+ //   implementation 'androidx.percentlayout:percentlayout:1.0.0'
+ //   implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+ //   implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.google.android.gms:play-services-wearable:18.0.0'
+}
+

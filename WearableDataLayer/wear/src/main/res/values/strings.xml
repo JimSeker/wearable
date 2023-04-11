@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">WearableDataLayer</string>
+    <string name="hello_square">Hello Wear World!</string>
+</resources>
