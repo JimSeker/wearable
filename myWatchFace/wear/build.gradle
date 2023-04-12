@@ -23,18 +23,18 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // Use to implement wear watchfaces
-    implementation "androidx.wear.watchface:watchface:1.2.0-alpha03"
+    implementation "androidx.wear.watchface:watchface:1.2.0-alpha07"
 
     // Use to implement wear watchface complications
-    implementation "androidx.wear.watchface:watchface-complications-data-source:1.2.0-alpha03"
+    implementation "androidx.wear.watchface:watchface-complications-data-source:1.2.0-alpha07"
     // (Kotlin-specific extensions)
-    implementation "androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.0-alpha03"
+    implementation "androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.0-alpha07"
 
     // Use to implement a watchface style and complication editor
-    implementation "androidx.wear.watchface:watchface-editor:1.2.0-alpha03"
+    implementation "androidx.wear.watchface:watchface-editor:1.2.0-alpha07"
 
     // Can use to render complications.
     // This library is optional and watchfaces may have custom implementation for rendering
     // complications.
-    implementation "androidx.wear.watchface:watchface-complications-rendering:1.2.0-alpha03"
+    implementation "androidx.wear.watchface:watchface-complications-rendering:1.2.0-alpha07"
 }

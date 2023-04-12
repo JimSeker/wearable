@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.view.SurfaceHolder;
+
 import java.time.ZonedDateTime;
 import java.util.Calendar;
 
@@ -68,7 +69,7 @@ public class BatmanWatchFaceService extends WatchFaceService {
 
         return new WatchFace(
             WatchFaceType.DIGITAL,
-            new  BatmanWatchFaceService.batmanCanvasRender(getApplicationContext(), surfaceHolder, watchState, complicationSlotsManager, currentUserStyleRepository, CanvasType.HARDWARE)
+            new BatmanWatchFaceService.batmanCanvasRender(getApplicationContext(), surfaceHolder, watchState, complicationSlotsManager, currentUserStyleRepository, CanvasType.HARDWARE)
         );
     }
 

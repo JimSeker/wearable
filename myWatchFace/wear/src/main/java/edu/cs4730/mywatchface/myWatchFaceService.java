@@ -32,7 +32,7 @@ import kotlin.coroutines.Continuation;
 import static android.graphics.Color.*;
 
 /**
- * this code is based off google's original example, but updated to point, it is likely
+ * this code is based off google's original example, but updated to the point that it is likely
  * no longer recognizable.
  */
 

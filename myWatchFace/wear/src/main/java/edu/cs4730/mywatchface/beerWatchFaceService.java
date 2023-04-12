@@ -25,7 +25,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 
-/*
+/**
  *  this is the most striped down version of the watchfaceservice.
  *  since it doesn't even show the time, it only updates on the default.
  *  it deals with everything necessary, such as ambient and timezone changes.
