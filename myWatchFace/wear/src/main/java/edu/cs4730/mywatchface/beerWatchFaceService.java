@@ -3,7 +3,9 @@ package edu.cs4730.mywatchface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.SurfaceHolder;
+
 import org.jetbrains.annotations.Nullable;
+
 import java.time.ZonedDateTime;
 
 import androidx.annotation.NonNull;
@@ -26,12 +28,12 @@ import android.graphics.Rect;
 
 
 /**
- *  this is the most striped down version of the watchfaceservice.
- *  since it doesn't even show the time, it only updates on the default.
- *  it deals with everything necessary, such as ambient and timezone changes.
- *
- *   Need to learn how to use the userstye part, so beertime interactive would
- *   be different colors.
+ * this is the most striped down version of the watchfaceservice.
+ * since it doesn't even show the time, it only updates on the default.
+ * it deals with everything necessary, such as ambient and timezone changes.
+ * <p>
+ * Need to learn how to use the userstye part, so beertime interactive would
+ * be different colors.
  */
 
 public class beerWatchFaceService extends WatchFaceService {
@@ -43,20 +45,18 @@ public class beerWatchFaceService extends WatchFaceService {
 
     @Nullable
     @Override
-    protected WatchFace createWatchFace(@NonNull SurfaceHolder surfaceHolder,
-                                        @NonNull WatchState watchState,
-                                        @NonNull ComplicationSlotsManager complicationSlotsManager,
-                                        @NonNull CurrentUserStyleRepository currentUserStyleRepository,
-                                        @NonNull Continuation<? super WatchFace> continuation) {
-
+    protected WatchFace createWatchFace(
+        @NonNull SurfaceHolder surfaceHolder,
+        @NonNull WatchState watchState,
+        @NonNull ComplicationSlotsManager complicationSlotsManager,
+        @NonNull CurrentUserStyleRepository currentUserStyleRepository,
+        @NonNull Continuation<? super WatchFace> continuation) {
 
         return new WatchFace(
             WatchFaceType.DIGITAL,
             new beerCanvasRender(getApplicationContext(), surfaceHolder, watchState, complicationSlotsManager, currentUserStyleRepository, CanvasType.HARDWARE)
         );
     }
-
-
 
 
     class beerCanvasRender extends Renderer.CanvasRenderer2<beerCanvasRender.beerShareAssets> {
@@ -71,7 +71,6 @@ public class beerWatchFaceService extends WatchFaceService {
         int canvasType;
         Paint mBackgroundPaint;
         Paint mtextPaint;
-
 
 
         @Override
