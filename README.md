@@ -1,6 +1,10 @@
 Android wearable Examples
 ========
 
+>[!important]
+> Note:  this repo has not been updated since 2023.  At this point, I going to archive the repo as I have no devices to test with, nor the interest to continue.  If that changes in the future I will unarchive this repo and start again.
+
+
 `eclipse/` is old examples in the eclipse format for wear v1.0.0 
 
 `v1.3.0/` are some of these examples halted at v1.3.0, since v2.1 and support.wear changes/deprecated the APIs.
